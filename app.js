@@ -1027,6 +1027,14 @@
     const loreModal = document.getElementById('loreModalOverlay');
     const openLoreBtn = document.getElementById('openLoreModalBtn');
     const closeLoreBtn = document.getElementById('closeLoreModalBtn');
+    const importModal = document.getElementById('importTransactionsModal');
+    const openImportBtn = document.getElementById('openImportModalBtn');
+    const closeImportBtn = document.getElementById('closeImportModalBtn');
+    const fileInput = document.getElementById('bankCsvFileInput');
+    const fileNameDisplay = document.getElementById('csvFileNameDisplay');
+    const pasteArea = document.getElementById('rawTransactionsPasteArea');
+    const balanceInput = document.getElementById('importStartingBalanceInput');
+    const executeImportBtn = document.getElementById('executeImportBtn');
     const zoomClinicBtn = document.getElementById('zoomClinicBtn');
     const copyScriptBtn = document.getElementById('copyNextActionScriptBtn');
 
@@ -1035,6 +1043,63 @@
     if (loreModal) {
       loreModal.addEventListener('click', (e) => {
         if (e.target === loreModal) loreModal.style.display = 'none';
+      });
+    }
+
+    // Bank CSV / Scotiabank Importer Modal Handlers
+    if (openImportBtn && importModal) {
+      openImportBtn.addEventListener('click', () => {
+        importModal.style.display = 'flex';
+        if (balanceInput) {
+          balanceInput.value = window.LifeBrain?.state?.finances?.liquidDebit || 3000;
+        }
+      });
+    }
+
+    if (closeImportBtn && importModal) {
+      closeImportBtn.addEventListener('click', () => importModal.style.display = 'none');
+    }
+
+    if (importModal) {
+      importModal.addEventListener('click', (e) => {
+        if (e.target === importModal) importModal.style.display = 'none';
+      });
+    }
+
+    // CSV File Reader
+    if (fileInput) {
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          if (fileNameDisplay) fileNameDisplay.textContent = `📄 ${file.name} (${Math.round(file.size / 1024)} KB)`;
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            if (pasteArea) pasteArea.value = event.target.result;
+            showToast(`📂 Loaded ${file.name}`);
+          };
+          reader.readAsText(file);
+        }
+      });
+    }
+
+    // Execute Import Action
+    if (executeImportBtn) {
+      executeImportBtn.addEventListener('click', () => {
+        const text = pasteArea ? pasteArea.value.trim() : '';
+        if (!text) {
+          showToast("⚠️ Please choose a CSV file or paste transaction text first!");
+          return;
+        }
+
+        const startBal = balanceInput && balanceInput.value ? parseFloat(balanceInput.value) : null;
+        const result = window.LifeBrain.importTransactions(text, startBal);
+
+        if (result.count > 0) {
+          if (importModal) importModal.style.display = 'none';
+          showToast(`💳 Imported ${result.count} transactions ($${result.totalAmount.toFixed(2)} total)! Balance: $${result.newBalance.toFixed(2)}`);
+        } else {
+          showToast("⚠️ Could not find any valid transactions. Try pasting lines like 'DOLLARAMA $4.50'");
+        }
       });
     }
 

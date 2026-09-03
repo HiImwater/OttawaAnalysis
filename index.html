@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
   <!-- Unified Mobile-First Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=3.6.0">
+  <link rel="stylesheet" href="style.css?v=3.7.0">
 </head>
 <body>
 
@@ -266,6 +266,7 @@
         <!-- Logged Expenses Section -->
         <div class="section-title-row" style="margin-top: 12px;">
           <span class="section-heading">🧾 Recent Expenses</span>
+          <button class="btn-compact secondary" id="openImportModalBtn">📥 Import Bank CSV</button>
         </div>
         <div class="expenses-stream" id="deckExpensesList">
           <!-- Injected from LifeBrain -->
@@ -359,12 +360,45 @@
     </div>
   </div>
 
+  <!-- MODAL: BANK CSV & TRANSACTION IMPORTER -->
+  <div class="modal-overlay" id="importTransactionsModal">
+    <div class="modal-box" style="max-width: 520px;">
+      <button class="modal-close-btn" id="closeImportModalBtn">&times;</button>
+      
+      <div style="font-size: 1.15rem; font-weight: 800; color: #fff; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+        <span>💳</span> Import Canadian Bank Statement
+      </div>
+      <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">
+        100% Private & Local in your browser. Upload a CSV export from TD, RBC, Scotia, BMO, CIBC, or paste transaction rows directly.
+      </p>
+
+      <!-- CSV File Upload Dropzone -->
+      <div style="border: 2px dashed rgba(6, 182, 212, 0.35); border-radius: var(--radius-md); padding: 12px; text-align: center; background: rgba(6, 182, 212, 0.04); margin-bottom: 10px;">
+        <input type="file" id="bankCsvFileInput" accept=".csv, .txt" style="display: none;">
+        <button type="button" class="btn-compact primary" onclick="document.getElementById('bankCsvFileInput').click()">📁 Choose Bank CSV File</button>
+        <span id="csvFileNameDisplay" style="display: block; font-size: 0.72rem; color: var(--cyan); margin-top: 4px;">No file selected</span>
+      </div>
+
+      <!-- OR Paste Raw Text -->
+      <div style="font-size: 0.76rem; font-weight: 700; color: #cbd5e1; margin-bottom: 4px;">Or Paste Bank / E-Transfer Text Directly:</div>
+      <textarea id="rawTransactionsPasteArea" class="native-textarea" style="height: 120px; font-size: 0.76rem;" placeholder="Sep 2 - DOLLARAMA $4.50&#10;Sep 1 - 3 BROTHERS SHAWARMA $16.10&#10;Aug 31 - INTERAC E-TRANSFER $800.00"></textarea>
+
+      <div style="display: flex; gap: 8px; align-items: center; margin-top: 10px;">
+        <div style="flex: 1;">
+          <label style="font-size: 0.72rem; color: var(--text-muted); display: block;">Calibrate Starting Balance (CAD):</label>
+          <input type="number" id="importStartingBalanceInput" placeholder="3000.00" style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border); color: #fff; padding: 6px 8px; border-radius: var(--radius-xs); font-family: var(--font-mono); font-size: 0.8rem;">
+        </div>
+        <button id="executeImportBtn" class="btn-compact primary" style="padding: 9px 16px; margin-top: 14px; font-weight: 800;">⚡ Parse & Import</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   
   <!-- Core Scripts with Cache Buster -->
-  <script src="data.js?v=3.6.0"></script>
-  <script src="lifeBrain.js?v=3.6.0"></script>
-  <script src="app.js?v=3.6.0"></script>
+  <script src="data.js?v=3.7.0"></script>
+  <script src="lifeBrain.js?v=3.7.0"></script>
+  <script src="app.js?v=3.7.0"></script>
 </body>
 </html>

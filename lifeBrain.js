@@ -272,13 +272,154 @@ class LifeBrainEngine {
     return [45.4240 + (Math.random() - 0.5) * 0.005, -75.6830 + (Math.random() - 0.5) * 0.005];
   }
 
+  // Auto-categorization helper for Canadian bank statements
+  categorizeTransaction(label) {
+    const l = (label || '').toLowerCase();
+    if (l.includes('shawarma') || l.includes('farm boy') || l.includes('loblaws') || 
+        l.includes('tim horton') || l.includes('mcdonald') || l.includes('grocery') || 
+        l.includes('food') || l.includes('diner') || l.includes('zaks') || 
+        l.includes('giant tiger') || l.includes('subway') || l.includes('coffee') || 
+        l.includes('uber eats') || l.includes('doordash') || l.includes('restaurant')) {
+      return { category: 'food', icon: '🍔', labelTag: 'Food & Fuel' };
+    }
+    if (l.includes('hostel') || l.includes('saintlo') || l.includes('rent') || 
+        l.includes('e-transfer') || l.includes('etransfer') || l.includes('deposit') || 
+        l.includes('landlord') || l.includes('lease') || l.includes('interac')) {
+      return { category: 'housing', icon: '🏠', labelTag: 'Shelter & Rent' };
+    }
+    if (l.includes('shoppers') || l.includes('pharmacy') || l.includes('clinic') || 
+        l.includes('urgent care') || l.includes('rexall') || l.includes('medical') || 
+        l.includes('health') || l.includes('doctor') || l.includes('hospital')) {
+      return { category: 'health', icon: '🏥', labelTag: 'Health & Pharmacy' };
+    }
+    if (l.includes('dollarama') || l.includes('best buy') || l.includes('apple') || 
+        l.includes('amazon') || l.includes('earphone') || l.includes('electronics') || 
+        l.includes('cable') || l.includes('hardware')) {
+      return { category: 'tech', icon: '🎧', labelTag: 'Tech & Supplies' };
+    }
+    if (l.includes('oc transpo') || l.includes('presto') || l.includes('uber') || 
+        l.includes('lyft') || l.includes('transit') || l.includes('gas') || l.includes('esso') || l.includes('petro')) {
+      return { category: 'transit', icon: '🚌', labelTag: 'Transit' };
+    }
+    return { category: 'misc', icon: '📦', labelTag: 'General' };
+  }
+
+  // Robust Canadian Bank & Scotiabank CSV & Raw Text Transaction Importer
+  importTransactions(rawInput, startingBalance = null) {
+    if (!rawInput || typeof rawInput !== 'string') return { count: 0, totalAmount: 0 };
+
+    const lines = rawInput.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+    const parsed = [];
+    let totalImportedAmount = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const lower = line.toLowerCase();
+
+      // 1. Skip CSV header line if present
+      if (lower.includes('date') && (lower.includes('description') || lower.includes('amount') || lower.includes('balance') || lower.includes('withdrawal'))) {
+        continue;
+      }
+
+      let date = new Date().toISOString().split('T')[0];
+      let label = '';
+      let amount = 0;
+
+      // --- A. CSV FORMAT (Comma or Tab Separated) ---
+      if (line.includes(',') || line.includes('\t')) {
+        const parts = line.includes('\t') ? line.split('\t') : line.split(',');
+        const clean = parts.map(p => p.replace(/^["']|["']$/g, '').trim());
+
+        // Scotiabank 5-column: [Date, Type, Description, Amount/Withdrawal, Balance]
+        if (clean.length >= 4) {
+          date = clean[0];
+          // If description is in col 2 or col 1
+          label = (clean[2] && clean[2].length > clean[1].length) ? clean[2] : (clean[1] + (clean[2] ? ' - ' + clean[2] : ''));
+          // Look for amount in col 3 or col 2
+          const rawAmt = clean[3] || clean[2] || '0';
+          amount = Math.abs(parseFloat(rawAmt.replace(/[^0-9.-]/g, '')) || 0);
+        } else if (clean.length === 3) {
+          // Standard 3-column: [Date, Description, Amount]
+          date = clean[0];
+          label = clean[1];
+          amount = Math.abs(parseFloat(clean[2].replace(/[^0-9.-]/g, '')) || 0);
+        } else if (clean.length === 2) {
+          label = clean[0];
+          amount = Math.abs(parseFloat(clean[1].replace(/[^0-9.-]/g, '')) || 0);
+        }
+      } else {
+        // --- B. RAW TEXT / SCOTIABANK MOBILE APP COPY-PASTE ---
+        // Check if single line has both text and $ amount
+        const amountMatch = line.match(/\$?\s?-?\$?([0-9]+\.?[0-9]{0,2})/);
+        const hasDate = line.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|[0-9]{1,2}\/[0-9]{1,2})/i);
+
+        if (amountMatch && (line.includes('$') || parseFloat(amountMatch[1]) > 0)) {
+          amount = parseFloat(amountMatch[1]) || 0;
+          label = line.replace(amountMatch[0], '').replace(/[-–—•]/g, '').trim();
+          if (hasDate) {
+            date = hasDate[0];
+          }
+        } else if (i + 1 < lines.length && lines[i + 1].match(/\$?\s?-?\$?([0-9]+\.?[0-9]{0,2})/)) {
+          // Multi-line Scotiabank app format: Line i = Vendor, Line i+1 = Amount
+          label = line;
+          const nextAmtMatch = lines[i + 1].match(/\$?\s?-?\$?([0-9]+\.?[0-9]{0,2})/);
+          amount = parseFloat(nextAmtMatch[1]) || 0;
+          i++; // advance past amount line
+        }
+      }
+
+      // Clean up common bank prefix noise
+      if (label) {
+        label = label.replace(/^(POS PURCHASE|PRE-AUTHORIZED DEBIT|INTERAC E-TRF|ONLINE BILL PAYMENT|DEBIT CARD PURCHASE|SCOTIABANK)\s?[-:]?\s?/i, '').trim();
+      }
+
+      if (label && amount > 0) {
+        const catInfo = this.categorizeTransaction(label);
+        parsed.push({
+          id: 'exp-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+          label: label || 'Expense',
+          amount: amount,
+          category: catInfo.category,
+          categoryTag: catInfo.labelTag,
+          icon: catInfo.icon,
+          date: date || new Date().toISOString()
+        });
+        totalImportedAmount += amount;
+      }
+    }
+
+    if (parsed.length > 0) {
+      // Prepend newly imported transactions
+      this.state.finances.expenses = [...parsed, ...this.state.finances.expenses];
+      
+      // Update balance
+      if (startingBalance !== null && !isNaN(startingBalance) && startingBalance > 0) {
+        this.state.finances.liquidDebit = Math.max(0, startingBalance - totalImportedAmount);
+      } else {
+        this.state.finances.liquidDebit = Math.max(0, this.state.finances.liquidDebit - totalImportedAmount);
+      }
+
+      this.saveState();
+    }
+
+    return {
+      count: parsed.length,
+      totalAmount: totalImportedAmount,
+      newBalance: this.state.finances.liquidDebit
+    };
+  }
+
   // Financial methods
   addExpense(label, amount) {
+    const catInfo = this.categorizeTransaction(label);
     this.state.finances.liquidDebit = Math.max(0, this.state.finances.liquidDebit - amount);
     this.state.finances.expenses.unshift({
       id: 'exp-' + Date.now(),
       label: label,
       amount: amount,
+      category: catInfo.category,
+      categoryTag: catInfo.labelTag,
+      icon: catInfo.icon,
       date: new Date().toISOString()
     });
     this.saveState();
