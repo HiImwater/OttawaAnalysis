@@ -89,11 +89,15 @@
 
     window.leafletMap = state.leafletMap;
 
-    // OpenStreetMap High-Precision Tiles with Dark CSS Filter (100% Free Forever, Zero API Key Glitches)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      className: 'dark-map-tiles',
-      attribution: '&copy; OpenStreetMap contributors'
+    // Esri World Dark Gray Canvas Base (Zero API Keys, Pure Native Dark Cartography)
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 16,
+      attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+    }).addTo(state.leafletMap);
+
+    // Esri World Dark Gray Reference Overlay (Crisp Street Labels & Boundaries)
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 16
     }).addTo(state.leafletMap);
 
     // Zoom Controls at Top Left
