@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
   <!-- Unified Mobile-First Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=3.9.0">
+  <link rel="stylesheet" href="style.css?v=4.0.0">
 </head>
 <body>
 
@@ -264,10 +264,18 @@
         </div>
 
         <!-- Logged Expenses Section -->
-        <div class="section-title-row" style="margin-top: 12px;">
+        <div class="section-title-row" style="margin-top: 14px; margin-bottom: 6px;">
           <span class="section-heading">🧾 Recent Expenses</span>
-          <button class="btn-compact secondary" id="openImportModalBtn">📥 Import Bank CSV</button>
+          <button class="btn-compact secondary" id="openImportModalBtn">📥 CSV / Alert Info</button>
         </div>
+
+        <!-- 1-Tap Quick Logger & Paste Bar (Zero Friction for Any Phone) -->
+        <div style="display: flex; gap: 5px; align-items: center; margin-bottom: 8px;">
+          <input type="text" id="quickExpenseInput" placeholder="Quick log: '16 shawarma' or paste Scotiabank text" style="flex: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--border); color: #fff; padding: 7px 10px; border-radius: var(--radius-xs); font-size: 0.76rem; font-family: var(--font-sans); outline: none;">
+          <button id="quickExpenseAddBtn" class="btn-compact primary" style="padding: 7px 11px; font-weight: 800; font-size: 0.74rem;">⚡ Log</button>
+          <button id="quickExpensePasteBtn" class="btn-compact secondary" title="Paste copied email/text" style="padding: 7px 9px; font-size: 0.74rem;">📋 Paste</button>
+        </div>
+
         <div class="expenses-stream" id="deckExpensesList">
           <!-- Injected from LifeBrain -->
         </div>
@@ -411,8 +419,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   
   <!-- Core Scripts with Cache Buster -->
-  <script src="data.js?v=3.9.0"></script>
-  <script src="lifeBrain.js?v=3.9.0"></script>
-  <script src="app.js?v=3.9.0"></script>
+  <script src="data.js?v=4.0.0"></script>
+  <script src="lifeBrain.js?v=4.0.0"></script>
+  <script src="app.js?v=4.0.0"></script>
 </body>
 </html>

@@ -48,6 +48,7 @@
     initLifeBrainSync();
     initManualNotepad();
     initHousingPipeline();
+    initQuickExpenseBar();
     initDirectionalGps();
     initModals();
 
@@ -794,6 +795,78 @@
         <span class="text-rose">-$${exp.amount.toFixed(2)}</span>
       </div>
     `).join('');
+  }
+
+  function initQuickExpenseBar() {
+    const input = document.getElementById('quickExpenseInput');
+    const addBtn = document.getElementById('quickExpenseAddBtn');
+    const pasteBtn = document.getElementById('quickExpensePasteBtn');
+
+    if (!input || !addBtn) return;
+
+    const processText = (text) => {
+      if (!text || !text.trim()) return;
+      const clean = text.trim();
+      
+      // Try Scotiabank InfoAlert parser first
+      const alertRes = window.LifeBrain.parseScotiabankInfoAlert(clean);
+      if (alertRes && alertRes.success) {
+        showToast(`⚡ Scotiabank Alert Logged: -$${alertRes.amount.toFixed(2)} @ ${alertRes.vendor}!`);
+        input.value = '';
+        return;
+      }
+
+      // Try general Omni-input parser (e.g. "16 shawarma" or "4.50 earphones")
+      const omniRes = window.LifeBrain.parseOmniInput(clean);
+      if (omniRes && omniRes.actionTaken) {
+        showToast(omniRes.message || "⚡ Expense logged!");
+        input.value = '';
+      } else {
+        // Fallback standard expense parser
+        const amtMatch = clean.match(/\$?([0-9]+\.?[0-9]{0,2})/);
+        if (amtMatch) {
+          const amt = parseFloat(amtMatch[1]);
+          const vendor = clean.replace(amtMatch[0], '').trim() || 'Expense';
+          window.LifeBrain.addExpense(vendor, amt);
+          showToast(`⚡ Logged: -$${amt.toFixed(2)} for ${vendor}`);
+          input.value = '';
+        } else {
+          showToast("⚠️ Type an amount, e.g. '16 shawarma'");
+        }
+      }
+    };
+
+    addBtn.addEventListener('click', () => {
+      processText(input.value);
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        processText(input.value);
+      }
+    });
+
+    if (pasteBtn) {
+      pasteBtn.addEventListener('click', async () => {
+        try {
+          if (navigator.clipboard && navigator.clipboard.readText) {
+            const clipText = await navigator.clipboard.readText();
+            if (clipText) {
+              processText(clipText);
+            } else {
+              const pasted = prompt("Paste your Scotiabank email / SMS text here:");
+              if (pasted) processText(pasted);
+            }
+          } else {
+            const pasted = prompt("Paste your Scotiabank email / SMS text here:");
+            if (pasted) processText(pasted);
+          }
+        } catch (err) {
+          const pasted = prompt("Paste your Scotiabank email / SMS text here:");
+          if (pasted) processText(pasted);
+        }
+      });
+    }
   }
 
   function renderNutritionProtocol() {
