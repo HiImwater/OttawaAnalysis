@@ -37,8 +37,19 @@ OttawaAnalysis/
 
 ---
 
-## 🚀 Instant Update to Your Live Phone App (Netlify Drop)
+## 🌐 Live Web App & Repository
 
-1. Open your browser to **[app.netlify.com/drop](https://app.netlify.com/drop)** (or log in to your existing Netlify dashboard).
-2. Drag and drop the **`OttawaAnalysis`** folder directly from your Desktop into the Netlify drop zone.
-3. Your live link will immediately update on your iPhone with the full LifeGuide AI Cockpit!
+* **Live GitHub Pages Link (Free Forever):** **[https://hiimwater.github.io/OttawaAnalysis/](https://hiimwater.github.io/OttawaAnalysis/)**
+* **GitHub Repository:** **[https://github.com/HiImwater/OttawaAnalysis](https://github.com/HiImwater/OttawaAnalysis)**
+
+---
+
+## 🚀 Instant Updates via Git (No Netlify Limits)
+
+Whenever we make changes or you want to update your live app:
+```bash
+git add .
+git commit -m "update: your changes"
+git push
+```
+GitHub Pages automatically deploys the update to your live link in ~30 seconds!
