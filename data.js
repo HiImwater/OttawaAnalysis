@@ -347,6 +347,140 @@ const OTTAWA_DATA = {
     }
   ],
 
+  // 24/7 NOCTURNAL MASTER DIRECTORY (SPOTS OPEN ALL NIGHT)
+  twentyFourSevenDirectory: [
+    {
+      id: "247-esd",
+      name: "Elgin Street Diner (ESD)",
+      category: "24/7 Diner & Outpost",
+      categoryBadge: "🥞 24/7 Iconic Food & Work",
+      address: "374 Elgin St",
+      distance: "1.4 km (15 min night stroll / quick bus)",
+      coords: [45.4145, -75.6890],
+      openStatus: "Open 24 Hours / 365 Days",
+      features: "Bottomless coffee refills ($3.50), famous smoked meat poutine, breakfast all night, power outlets in booths, high-speed Wi-Fi, clean customer restrooms.",
+      nocturnalVibe: "Legendary nocturnal hub in Ottawa. Safe, bustling, well-lit, friendly staff used to late-night coders and night owls.",
+      icon: "🥞"
+    },
+    {
+      id: "247-zaks",
+      name: "Zak's Diner (ByWard Market)",
+      category: "24/7 Retro Diner",
+      categoryBadge: "🍔 24/7 Diner & Restrooms",
+      address: "14 Byward Market Square",
+      distance: "400 m (5 min walk)",
+      coords: [45.4278, -75.6935],
+      openStatus: "Open 24 Hours",
+      features: "Burgers, milkshakes, all-day breakfast skillets at 3:00 AM, booths, restrooms.",
+      nocturnalVibe: "Bright neon retro atmosphere right in ByWard Market. 5-minute walk from basecamp.",
+      icon: "🍔"
+    },
+    {
+      id: "247-timhortons",
+      name: "Tim Hortons Rideau",
+      category: "24/7 Budget Fuel & Coffee",
+      categoryBadge: "🥯 24/7 Coffee & Sandwiches",
+      address: "201 Rideau St (Corner of Rideau & Cumberland)",
+      distance: "280 m (3 min walk)",
+      coords: [45.4272, -75.6872],
+      openStatus: "Open 24 Hours / 7 Days",
+      features: "$2.50 large coffee, breakfast sandwiches ($4.20), bottled juices, quick grab-and-go counter.",
+      nocturnalVibe: "Fast, reliable, cheap caffeine and hot carb reload at 4:00 AM.",
+      icon: "🥯"
+    },
+    {
+      id: "247-mcdonalds",
+      name: "McDonald's Rideau",
+      category: "24/7 Fast Food",
+      categoryBadge: "🍟 24/7 Takeout Window",
+      address: "99 Rideau St",
+      distance: "250 m (3 min walk)",
+      coords: [45.4262, -75.6910],
+      openStatus: "Open 24 Hours",
+      features: "Late-night takeout window, hot coffee, cheap burger/fry combos, apple pies.",
+      nocturnalVibe: "Quick late night calorie fix right beside the mall entrance.",
+      icon: "🍟"
+    },
+    {
+      id: "247-circlek",
+      name: "Circle K / Quickie Convenience (Rideau)",
+      category: "24/7 Convenience & Hydration",
+      categoryBadge: "🏪 24/7 Cold Drinks & Snacks",
+      address: "255 Rideau St (Corner of Rideau & King Edward)",
+      distance: "350 m (4 min walk)",
+      coords: [45.4282, -75.6855],
+      openStatus: "Open 24 Hours",
+      features: "Large 1.5L cold water bottles ($2.29), energy drinks, protein bars, potato chips, tobacco, 24/7 ATM cash machine.",
+      nocturnalVibe: "Essential midnight pit-stop for hydration, snacks, and emergency supplies.",
+      icon: "🏪"
+    },
+    {
+      id: "247-quickie-elgin",
+      name: "Quickie Convenience Elgin",
+      category: "24/7 Convenience",
+      categoryBadge: "🏪 24/7 Snacks & Essentials",
+      address: "248 Elgin St",
+      distance: "1.1 km (12 min walk)",
+      coords: [45.4175, -75.6905],
+      openStatus: "Open 24 Hours",
+      features: "Cold drinks, snacks, ice, basic toiletries, ATM.",
+      nocturnalVibe: "Well-lit late night convenience store on the Elgin strip.",
+      icon: "🏪"
+    },
+    {
+      id: "247-hostel-lounge",
+      name: "Saintlo Jail Basecamp Lounge & Kitchen",
+      category: "24/7 Nocturnal Tech Sanctuary",
+      categoryBadge: "🏰 24/7 Wi-Fi, Desks & Free Water",
+      address: "75 Nicholas St (Basecamp)",
+      distance: "0 m (Home Base)",
+      coords: [45.4251, -75.6892],
+      openStatus: "24/7 Secure Guest Access",
+      features: "Gigabit Bell Fibe Wi-Fi, wall power outlets, heated indoor seating, free filtered water tap, 24/7 guest restrooms, on-duty 24/7 front desk security.",
+      nocturnalVibe: "Dead silent between 12:00 AM and 07:00 AM. The optimal, zero-cost nocturnal command center in Ottawa.",
+      icon: "🏰"
+    },
+    {
+      id: "247-3brothers",
+      name: "3 Brothers Shawarma (Late Night Anchor)",
+      category: "Late-Night Hot Food (Til 3 AM)",
+      categoryBadge: "🥙 Open til 3:00 AM",
+      address: "160 Rideau St (Corner of Rideau/Waller)",
+      distance: "220 m (3 min walk)",
+      coords: [45.4270, -75.6880],
+      openStatus: "Open Daily til 03:00 AM",
+      features: "Hot high-protein chicken shawarma platters, garlic potatoes, poutine, cold drinks.",
+      nocturnalVibe: "Go-to late-night hot protein reload 220m from your dorm.",
+      icon: "🥙"
+    },
+    {
+      id: "247-theloft",
+      name: "The Loft & Level One Game Pub",
+      category: "Late-Night Social (Til 1–2 AM)",
+      categoryBadge: "🎮 Open til 1:00 AM – 2:00 AM",
+      address: "14 Waller St (Next to Hostel)",
+      distance: "20 m (15 sec walk)",
+      coords: [45.4255, -75.6885],
+      openStatus: "Open til 01:00 AM (Sun-Thu) / 02:00 AM (Fri-Sat)",
+      features: "Late night gaming, craft drinks, hot cider, nachos, friendly tech & student crowd.",
+      nocturnalVibe: "20 steps behind the hostel. Zero weather exposure.",
+      icon: "🎮"
+    },
+    {
+      id: "247-health811",
+      name: "Ontario Health 811 (24/7 Medical Hotline)",
+      category: "24/7 Medical Nurse Triage",
+      categoryBadge: "📞 24/7 Free Health Advice",
+      address: "Phone: Dial 811 (Toll-Free in Ontario)",
+      distance: "Available Anywhere via Phone",
+      coords: [45.4215, -75.6972],
+      openStatus: "24 Hours / 7 Days / 365 Days",
+      features: "Speak directly with a Registered Nurse at 3:00 AM for free health advice regarding your toe healing, medications, or symptom triage.",
+      nocturnalVibe: "Instant free medical guidance from your phone without leaving bed.",
+      icon: "📞"
+    }
+  ],
+
   // 1. 24/7 & LATE NIGHT SPOTS (WALKING DISTANCE FROM 75 NICHOLAS)
   lateNightSpots: [
     {

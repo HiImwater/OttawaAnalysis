@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
   <!-- Unified Mobile-First Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=3.3.0">
+  <link rel="stylesheet" href="style.css?v=3.4.0">
 </head>
 <body>
 
@@ -71,8 +71,9 @@
     <!-- 1. FULLSCREEN LEAFLET MAP (PERMANENT BASE) -->
     <div id="map-container" class="map-layer"></div>
 
-    <!-- FLOATING MAP DRAWING, FOOD & AMENITIES LAYER CONTROLS -->
+    <!-- FLOATING MAP DRAWING, FOOD, AMENITIES & 24/7 LAYER CONTROLS -->
     <div class="map-floating-tools" id="mapDrawingToolbar">
+      <button class="map-tool-btn" id="toggle247PinsBtn" title="Show all 24/7 Spots (Diners, Coffee, Convenience & Restrooms)">🌙</button>
       <button class="map-tool-btn" id="toggleFoodPinsBtn" title="Show all Breakfast, Lunch & Dinner spots">🥗</button>
       <button class="map-tool-btn" id="toggleAmenitiesPinsBtn" title="Show Free Public Restrooms & Cold Water Stations">🚻</button>
       <button class="map-tool-btn" id="drawPenBtn" title="Draw freehand on map">✏️</button>
@@ -140,6 +141,15 @@
             <button class="btn-compact primary" id="zoomClinicBtn">📍 View on Map</button>
             <a href="tel:+16134829051" class="btn-compact secondary">📞 Call Clinic</a>
           </div>
+        </div>
+
+        <!-- 24/7 Nocturnal Radar Quick Card -->
+        <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.35); border-radius: var(--radius-md); padding: 8px 10px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 0.8rem; font-weight: 700; color: #a78bfa;">🌙 24/7 Nocturnal Radar</div>
+            <div style="font-size: 0.72rem; color: #cbd5e1;">ESD Diner (24h), Zak's (24h), Tim Hortons (24h), Circle K (24h)</div>
+          </div>
+          <button class="btn-compact primary" id="deckShow247Btn" style="font-size: 0.7rem; white-space: nowrap; background: #8b5cf6;">🌙 Show 24/7</button>
         </div>
 
         <!-- Free Restrooms & Water Stations Quick Card -->
@@ -353,8 +363,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   
   <!-- Core Scripts with Cache Buster -->
-  <script src="data.js?v=3.3.0"></script>
-  <script src="lifeBrain.js?v=3.3.0"></script>
-  <script src="app.js?v=3.3.0"></script>
+  <script src="data.js?v=3.4.0"></script>
+  <script src="lifeBrain.js?v=3.4.0"></script>
+  <script src="app.js?v=3.4.0"></script>
 </body>
 </html>

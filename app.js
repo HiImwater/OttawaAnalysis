@@ -32,9 +32,10 @@
     tempPolyline: null,
     drawnLayers: [],
 
-    // Food & Amenities Layers
+    // Food, Amenities & 24/7 Layers
     foodDirectoryMarkers: [],
-    amenitiesDirectoryMarkers: []
+    amenitiesDirectoryMarkers: [],
+    twentyFourSevenMarkers: []
   };
 
   window.state = state;
@@ -269,9 +270,24 @@
         if (mapEl) mapEl.style.cursor = 'crosshair';
         showToast(`✏️ Drawing Tool: ${tool.toUpperCase()} Active`);
       }
+    const toggle247Btn = document.getElementById('toggle247PinsBtn');
+    const deck247Btn = document.getElementById('deckShow247Btn');
     const foodToggleBtn = document.getElementById('toggleFoodPinsBtn');
     const amenitiesToggleBtn = document.getElementById('toggleAmenitiesPinsBtn');
     const deckAmenitiesBtn = document.getElementById('deckShowAmenitiesBtn');
+
+    if (toggle247Btn) {
+      toggle247Btn.addEventListener('click', () => {
+        toggle247DirectoryLayer(toggle247Btn);
+      });
+    }
+
+    if (deck247Btn) {
+      deck247Btn.addEventListener('click', () => {
+        setMobileTab('map');
+        toggle247DirectoryLayer(toggle247Btn);
+      });
+    }
 
     if (foodToggleBtn) {
       foodToggleBtn.addEventListener('click', () => {
@@ -528,6 +544,49 @@
 
       if (btn) btn.classList.add('active');
       showToast("🚻 Free Restrooms & 💧 Water Refills active!");
+    }
+  }
+
+  // 24/7 NOCTURNAL DIRECTORY MAP LAYER TOGGLE
+  function toggle247DirectoryLayer(btn) {
+    if (!state.leafletMap || !window.OTTAWA_DATA || !window.OTTAWA_DATA.twentyFourSevenDirectory) return;
+
+    if (state.twentyFourSevenMarkers.length > 0) {
+      state.twentyFourSevenMarkers.forEach(m => m.remove());
+      state.twentyFourSevenMarkers = [];
+      if (btn) btn.classList.remove('active');
+      showToast("🌙 24/7 spots layer hidden");
+    } else {
+      window.OTTAWA_DATA.twentyFourSevenDirectory.forEach(item => {
+        const markerIcon = L.divIcon({
+          className: 'night-pin-wrapper',
+          html: `
+            <div style="background: #0b0f19; border: 2px solid #8b5cf6; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 15px; box-shadow: 0 0 14px #8b5cf6;">
+              ${item.icon || '🌙'}
+            </div>
+          `,
+          iconSize: [32, 32],
+          iconAnchor: [16, 16]
+        });
+
+        const marker = L.marker(item.coords, { icon: markerIcon }).addTo(state.leafletMap);
+        marker.bindPopup(`
+          <div style="padding: 4px; font-family: var(--font-sans);">
+            <div style="font-size: 0.68rem; color: #a78bfa; font-family: var(--font-mono); font-weight: 700;">${item.categoryBadge}</div>
+            <h4 style="color: #fff; font-size: 0.95rem; margin: 2px 0;">${item.name}</h4>
+            <p style="font-size: 0.78rem; color: #10b981; font-weight: 700; margin-bottom: 2px;">🟢 ${item.openStatus}</p>
+            <p style="font-size: 0.74rem; color: #cbd5e1; line-height: 1.35; margin-bottom: 4px;">${item.features}</p>
+            <div style="font-size: 0.72rem; color: #a78bfa; background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.25); border-radius: 4px; padding: 4px 6px; margin-bottom: 4px; font-style: italic;">
+              "${item.nocturnalVibe}"
+            </div>
+            <div style="font-size: 0.7rem; color: #06b6d4; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 3px;">📍 ${item.distance} • ${item.address}</div>
+          </div>
+        `);
+        state.twentyFourSevenMarkers.push(marker);
+      });
+
+      if (btn) btn.classList.add('active');
+      showToast("🌙 24/7 Nocturnal Radar Active (Tap pins for Wi-Fi & outlets)");
     }
   }
 
