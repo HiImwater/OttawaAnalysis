@@ -250,6 +250,11 @@
     const clearBtn = document.getElementById('clearDrawingsBtn');
     const colorDots = document.querySelectorAll('.tool-color');
     const mapEl = document.getElementById('map-container');
+    const toggle247Btn = document.getElementById('toggle247PinsBtn');
+    const deck247Btn = document.getElementById('deckShow247Btn');
+    const foodToggleBtn = document.getElementById('toggleFoodPinsBtn');
+    const amenitiesToggleBtn = document.getElementById('toggleAmenitiesPinsBtn');
+    const deckAmenitiesBtn = document.getElementById('deckShowAmenitiesBtn');
 
     const setDrawingTool = (tool) => {
       if (state.drawingMode === tool) {
@@ -270,11 +275,7 @@
         if (mapEl) mapEl.style.cursor = 'crosshair';
         showToast(`✏️ Drawing Tool: ${tool.toUpperCase()} Active`);
       }
-    const toggle247Btn = document.getElementById('toggle247PinsBtn');
-    const deck247Btn = document.getElementById('deckShow247Btn');
-    const foodToggleBtn = document.getElementById('toggleFoodPinsBtn');
-    const amenitiesToggleBtn = document.getElementById('toggleAmenitiesPinsBtn');
-    const deckAmenitiesBtn = document.getElementById('deckShowAmenitiesBtn');
+    };
 
     if (toggle247Btn) {
       toggle247Btn.addEventListener('click', () => {
