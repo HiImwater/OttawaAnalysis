@@ -39,6 +39,314 @@ const OTTAWA_DATA = {
     cashStrategy: "Daily Pay Temp Staffing Agencies + Remote AI Tasking (No Restaurants)"
   },
 
+  // FOOD RECOMMENDATION MAP DIRECTORY (BREAKFAST, LUNCH, DINNER, LATE NIGHT)
+  foodMapDirectory: [
+    // --- BREAKFAST & MORNING FUEL ---
+    {
+      id: "food-b1",
+      name: "Saintlo Jail Free Breakfast",
+      mealType: "breakfast",
+      categoryName: "🍳 Free Hostel Breakfast",
+      address: "75 Nicholas St (Hostel Kitchen)",
+      hours: "07:30 AM – 10:00 AM",
+      priceRange: "$0.00 (Included)",
+      coords: [45.4251, -75.6892],
+      distance: "0 m (Inside Basecamp)",
+      topPicks: "Bagels with peanut butter, toast, whole grain cereal, black coffee, orange juice",
+      nutritionGoal: "Zero-cost morning carbs & caffeine before daily sprint",
+      icon: "🍳"
+    },
+    {
+      id: "food-b2",
+      name: "Happy Goat Coffee Co.",
+      mealType: "breakfast",
+      categoryName: "☕ Artisan Coffee & Workspace",
+      address: "229 Rideau St / Sandy Hill",
+      hours: "07:00 AM – 06:00 PM",
+      priceRange: "$3.50 – $8.00",
+      coords: [45.4278, -75.6865],
+      distance: "350 m (4 min walk)",
+      topPicks: "Cold brew / Americano + spinach & egg breakfast wrap",
+      nutritionGoal: "High-grade clean caffeine for deep morning flow state",
+      icon: "☕"
+    },
+    {
+      id: "food-b3",
+      name: "Bridgehead Coffee Dalhousie",
+      mealType: "breakfast",
+      categoryName: "☕ Coffee & Fast Fuel",
+      address: "224 Dalhousie St",
+      hours: "07:00 AM – 05:00 PM",
+      priceRange: "$4.00 – $9.00",
+      coords: [45.4290, -75.6905],
+      distance: "450 m (5 min walk)",
+      topPicks: "Fair-trade dark roast, oatmeal with seeds, artisan muffin",
+      nutritionGoal: "Slow-release carbs and mental priming",
+      icon: "☕"
+    },
+    {
+      id: "food-b4",
+      name: "Tim Hortons Rideau",
+      mealType: "breakfast",
+      categoryName: "🥯 24/7 Cheap Breakfast",
+      address: "201 Rideau St",
+      hours: "Open 24/7",
+      priceRange: "$2.50 – $6.00",
+      coords: [45.4272, -75.6872],
+      distance: "280 m (3 min walk)",
+      topPicks: "Egg & cheese English muffin + large black coffee ($4.20)",
+      nutritionGoal: "Fast, reliable budget protein at any hour",
+      icon: "🥯"
+    },
+
+    // --- LUNCH & MIDDAY BRAIN BOOST ---
+    {
+      id: "food-l1",
+      name: "Farm Boy (CF Rideau Level 1)",
+      mealType: "lunch",
+      categoryName: "🥗 Fresh Hot Bar & Whole Foods",
+      address: "50 Rideau St (Mall Level 1)",
+      hours: "08:00 AM – 09:00 PM",
+      priceRange: "$7.00 – $14.00",
+      coords: [45.4258, -75.6920],
+      distance: "180 m (2 min walk)",
+      topPicks: "Hot salad bar, grilled chicken breast, sushi rolls, fresh berry bowls",
+      nutritionGoal: "Clean micronutrients, high protein, zero sluggish food coma",
+      icon: "🥗"
+    },
+    {
+      id: "food-l2",
+      name: "Giant Tiger (ByWard Market)",
+      mealType: "lunch",
+      categoryName: "🛒 Ultra-Budget Grocery Hub",
+      address: "98 George St",
+      hours: "08:00 AM – 09:00 PM",
+      priceRange: "$2.00 – $7.00",
+      coords: [45.4285, -75.6912],
+      distance: "400 m (5 min walk)",
+      topPicks: "18-pk eggs ($5.99), bananas ($0.79/lb), peanut butter, bread, canned tuna",
+      nutritionGoal: "Maximum nutrient density per dollar spent",
+      icon: "🛒"
+    },
+    {
+      id: "food-l3",
+      name: "Loblaws Rideau",
+      mealType: "lunch",
+      categoryName: "🍗 Deli Counter & Groceries",
+      address: "363 Rideau St",
+      hours: "07:00 AM – 10:00 PM",
+      priceRange: "$6.00 – $13.00",
+      coords: [45.4310, -75.6820],
+      distance: "800 m (9 min walk)",
+      topPicks: "Whole rotisserie chicken ($12.99 = 3 meals), fresh sub counter, Greek yogurt",
+      nutritionGoal: "Bulk protein supply to refrigerate at hostel",
+      icon: "🍗"
+    },
+
+    // --- DINNER & TISSUE RECOVERY ---
+    {
+      id: "food-d1",
+      name: "3 Brothers Shawarma & Poutine",
+      mealType: "dinner",
+      categoryName: "🥙 High-Protein Shawarma Plate",
+      address: "160 Rideau St (Corner of Rideau/Waller)",
+      hours: "11:00 AM – 03:00 AM",
+      priceRange: "$14.00 – $18.00",
+      coords: [45.4270, -75.6880],
+      distance: "220 m (3 min walk)",
+      topPicks: "Chicken shawarma plate with salad, extra garlic sauce, hummus & potatoes",
+      nutritionGoal: "45g+ protein + allicin in garlic for antimicrobial toe healing",
+      icon: "🥙"
+    },
+    {
+      id: "food-d2",
+      name: "El Furniture Warehouse",
+      mealType: "dinner",
+      categoryName: "🍔 All-Item Budget Dining ($7–$10)",
+      address: "77 Clarence St (ByWard Market)",
+      hours: "11:00 AM – 02:00 AM",
+      priceRange: "$6.95 – $9.95",
+      coords: [45.4288, -75.6928],
+      distance: "450 m (5 min walk)",
+      topPicks: "Works burger, quinoa power bowl, street tacos, spicy wings",
+      nutritionGoal: "Super cheap sit-down hot meals in lively social setting",
+      icon: "🍔"
+    },
+    {
+      id: "food-d3",
+      name: "Shawarma Palace Rideau",
+      mealType: "dinner",
+      categoryName: "🥙 Legendary Giant Portions",
+      address: "464 Rideau St",
+      hours: "11:00 AM – 01:00 AM",
+      priceRange: "$15.00 – $19.00",
+      coords: [45.4330, -75.6780],
+      distance: "1.1 km (12 min walk / bus)",
+      topPicks: "Mixed Shawarma Platter (Huge portion — easily saves half for next day)",
+      nutritionGoal: "Massive calorie & protein reload (2 meals for $17)",
+      icon: "🥙"
+    },
+
+    // --- LATE NIGHT & DECOMPRESSION ---
+    {
+      id: "food-n1",
+      name: "The Loft / Level One Pub",
+      mealType: "latenight",
+      categoryName: "🎮 Late Night Food & Chill",
+      address: "14 Waller St (Next to Hostel)",
+      hours: "Open til 01:00 AM – 02:00 AM",
+      priceRange: "$6.00 – $16.00",
+      coords: [45.4255, -75.6885],
+      distance: "20 m (15 sec walk)",
+      topPicks: "Loaded nachos, craft grilled cheese, fries, hot cider",
+      nutritionGoal: "Nocturnal social unwinding 20 steps from bed",
+      icon: "🎮"
+    },
+    {
+      id: "food-n2",
+      name: "Elgin Street Diner",
+      mealType: "latenight",
+      categoryName: "🥞 24/7 Iconic All-Night Diner",
+      address: "374 Elgin St",
+      hours: "Open 24 Hours / 7 Days",
+      priceRange: "$10.00 – $18.00",
+      coords: [45.4145, -75.6890],
+      distance: "1.4 km (15 min walk / quick bus)",
+      topPicks: "All-day breakfast skillet, famous smoked meat poutine, bottomless coffee",
+      nutritionGoal: "Late-night booth with power outlets & warm comfort food",
+      icon: "🥞"
+    },
+    {
+      id: "food-n3",
+      name: "Zak's Diner ByWard Market",
+      mealType: "latenight",
+      categoryName: "🍔 24/7 Classic Retro Diner",
+      address: "14 Byward Market Square",
+      hours: "Open 24 Hours",
+      priceRange: "$12.00 – $19.00",
+      coords: [45.4278, -75.6935],
+      distance: "400 m (5 min walk)",
+      topPicks: "Burgers, milkshakes, breakfast combos at 3 AM",
+      nutritionGoal: "Safe, dry, illuminated late night oasis in the Market",
+    }
+  ],
+
+  // FREE PUBLIC RESTROOMS & CLEAN WATER REFILL STATIONS DIRECTORY
+  amenitiesMapDirectory: [
+    {
+      id: "amenity-1",
+      name: "Saintlo Jail Basecamp Kitchen & Lounge",
+      type: "both", // 'bathroom' | 'water' | 'both'
+      categoryLabel: "🏰 Basecamp Guest Restrooms & Filtered Water",
+      address: "75 Nicholas St",
+      hours: "24 Hours / 7 Days",
+      access: "100% Free for Guests",
+      coords: [45.4251, -75.6892],
+      distance: "0 m (Inside Basecamp)",
+      floorDetails: "Ground floor kitchen sink & 2nd floor restrooms",
+      proTip: "Fill up your water bottle before heading out for the day.",
+      icon: "💧"
+    },
+    {
+      id: "amenity-2",
+      name: "CF Rideau Centre Level 1 (Near Farm Boy)",
+      type: "both",
+      categoryLabel: "🚻 Spotless Mall Restroom & 💧 Water Refill",
+      address: "50 Rideau St (Level 1 Concourse)",
+      hours: "10:00 AM – 09:00 PM (Sun til 6 PM)",
+      access: "100% Free Public Access",
+      coords: [45.4258, -75.6920],
+      distance: "180 m (2 min walk)",
+      floorDetails: "Level 1 hallway next to Farm Boy & Shoppers Drug Mart",
+      proTip: "Touchless cold filtered Elkay bottle refill station right outside the washroom door.",
+      icon: "🚻"
+    },
+    {
+      id: "amenity-3",
+      name: "CF Rideau Centre Level 2 (Dining Hall)",
+      type: "both",
+      categoryLabel: "🚻 Food Court Restroom & 💧 Water Refill",
+      address: "50 Rideau St (Level 2 Food Court)",
+      hours: "10:00 AM – 09:00 PM",
+      access: "100% Free Public Access",
+      coords: [45.4255, -75.6925],
+      distance: "200 m (3 min walk)",
+      floorDetails: "Level 2 Dining Hall beside Subway / A&W",
+      proTip: "Clean high-volume multi-stall washroom with quick water fountain.",
+      icon: "🚻"
+    },
+    {
+      id: "amenity-4",
+      name: "National Arts Centre (NAC) Public Atrium",
+      type: "both",
+      categoryLabel: "🏛️ Luxury Public Restrooms & Water",
+      address: "1 Elgin St (Corner of Elgin & Wellington)",
+      hours: "07:00 AM – 10:00 PM Daily",
+      access: "100% Free Public Cultural Space",
+      coords: [45.4235, -75.6935],
+      distance: "320 m (4 min walk across canal)",
+      floorDetails: "Main ground floor glass atrium lounge",
+      proTip: "Warmest, quietest, cleanest public washrooms downtown with comfortable lounge couches and free public Wi-Fi.",
+      icon: "🏛️"
+    },
+    {
+      id: "amenity-5",
+      name: "uOttawa University Centre (UCU)",
+      type: "both",
+      categoryLabel: "🎓 Campus Public Restrooms & Cold Water",
+      address: "85 University Private (Sandy Hill)",
+      hours: "07:00 AM – 11:00 PM Daily",
+      access: "100% Free Public Campus Building",
+      coords: [45.4230, -75.6830],
+      distance: "450 m (5 min walk)",
+      floorDetails: "Level 1 & Level 2 main concourse",
+      proTip: "Refrigerated filtered water bottle stations on every floor; zero commercial pressure.",
+      icon: "💧"
+    },
+    {
+      id: "amenity-6",
+      name: "uOttawa FSS Social Sciences Tower",
+      type: "both",
+      categoryLabel: "🎓 Modern High-Tech Washrooms & Water",
+      address: "120 University Private (Sandy Hill)",
+      hours: "07:00 AM – 10:00 PM",
+      access: "100% Free Public Campus Access",
+      coords: [45.4215, -75.6835],
+      distance: "550 m (6 min walk)",
+      floorDetails: "Main lobby next to the 6-story living green wall",
+      proTip: "Ultra-modern, air conditioned/heated, beautiful indoor plant wall with fast Elkay water refiller.",
+      icon: "🚻"
+    },
+    {
+      id: "amenity-7",
+      name: "Ottawa Public Library (Main Branch)",
+      type: "both",
+      categoryLabel: "📚 Public Library Restrooms & Water",
+      address: "120 Metcalfe St (Corner of Metcalfe & Laurier)",
+      hours: "10:00 AM – 08:00 PM (Mon-Thu), til 6 PM (Fri-Sat)",
+      access: "100% Free City Public Library",
+      coords: [45.4195, -75.6965],
+      distance: "750 m (8 min walk / quick bus)",
+      floorDetails: "All floors beside elevators",
+      proTip: "Clean private cubicles, water fountains, and free study desks with electrical outlets.",
+      icon: "📚"
+    },
+    {
+      id: "amenity-8",
+      name: "ByWard Market Hall Building",
+      type: "bathroom",
+      categoryLabel: "🛒 Historic Market Public Washrooms",
+      address: "55 Byward Market Square",
+      hours: "09:00 AM – 06:00 PM Daily",
+      access: "100% Free Public Access",
+      coords: [45.4280, -75.6925],
+      distance: "350 m (4 min walk)",
+      floorDetails: "Ground floor center hallway inside the brick market hall",
+      proTip: "Good quick stop when exploring ByWard Market fruit stands and street food.",
+      icon: "🚻"
+    }
+  ],
+
   // 1. 24/7 & LATE NIGHT SPOTS (WALKING DISTANCE FROM 75 NICHOLAS)
   lateNightSpots: [
     {
@@ -222,401 +530,396 @@ const OTTAWA_DATA = {
     }
   ],
 
-  // 6. COMPLETE 7-DAY OPERATIONAL SPRINT (NOCTURNAL OPERATOR SPRINT)
+  // 6. COMPLETE 7-DAY OPERATIONAL SPRINT (WITH MAP FOOD WAYPOINTS FOR EVERY DAY)
   sevenDayPlan: [
-    // --- DAY 1 (WEDNESDAY NIGHT / THURSDAY EARLY MORNING): NOCTURNAL POWER RUN ---
+    // --- DAY 1 (WEDNESDAY NIGHT): NOCTURNAL SPRINT & LATE-NIGHT DINNER ---
     {
       dayNum: 1,
-      dayLabel: "Day 1 (Wed Night)",
-      theme: "Nocturnal Power Architecture: Fun at The Loft, AI Cash Grind & Landlord Inbox Dominance",
-      keyMilestone: "Socialize at The Loft (20m away) + Earn $80–$150 USD on AI tasks + Blast 15 rooms for #1 landlord inbox position",
+      dayLabel: "Day 1 (Wed)",
+      theme: "Nocturnal Power Sprint & Late-Night Recovery Fuel",
+      keyMilestone: "High-protein Shawarma Dinner + Social @ The Loft + Overnight Landlord Outreach",
       pathCoords: [
-        [45.4252, -75.6918], // Dollarama (CF Rideau Centre Level 1)
-        [45.4255, -75.6885], // The Loft (14 Waller St - 20m from hostel)
-        [45.4251, -75.6892]  // Basecamp Lounge (75 Nicholas St)
+        [45.4252, -75.6918], // Dollarama
+        [45.4270, -75.6880], // 3 Brothers Shawarma (Dinner)
+        [45.4255, -75.6885], // The Loft (Late Night)
+        [45.4251, -75.6892]  // Jail Basecamp
       ],
       schedule: [
         {
           id: "d1-1",
           time: "07:15 PM – 08:00 PM",
-          phase: "🎧 Dollarama Errand (Closes 9 PM) & Gear Up",
+          phase: "🎧 Dollarama Errand (Gear Up)",
           locationName: "Dollarama (CF Rideau Level 1)",
           coords: [45.4252, -75.6918],
-          mission: "Head down to Level 1 Dollarama before 9 PM. Buy $4.50 wired earphones with mic + a bottle of water. Stay dry inside the mall.",
-          whoToTalkTo: "Cashier",
-          scriptTitle: "Earphone Lookup",
-          scriptText: "Excuse me, where are the wired phone earphones located?",
+          mission: "Buy $4.50 wired earphones with mic + water bottle. Stay dry inside mall.",
           badgeColor: "#06b6d4",
-          actionTag: "Quick Errand"
+          actionTag: "Gear Up"
         },
         {
           id: "d1-2",
-          time: "08:00 PM – 11:30 PM",
-          phase: "🎲 Social Unwind & Gaming @ The Loft",
-          locationName: "The Loft / Level One Pub (14 Waller St)",
-          coords: [45.4255, -75.6885],
-          mission: "Walk 20m behind the hostel into The Loft ($9 cover). Play board games/video games, chat with friendly local techies and university students, grab a drink, and enjoy a lively rainy evening indoors!",
-          whoToTalkTo: "Game Hosts & Open Tables",
-          scriptTitle: "Social Table Drop-In Script",
-          scriptText: "Hey! Mind if I jump in for the next round? I'm Jordan, just moved into Ottawa working in AI.",
-          badgeColor: "#f43f5e",
-          actionTag: "Social & Fun"
+          time: "08:00 PM – 09:00 PM",
+          phase: "🍗 DINNER: 3 Brothers Chicken Shawarma Plate",
+          locationName: "3 Brothers Shawarma (160 Rideau St • 220m)",
+          coords: [45.4270, -75.6880],
+          mission: "High-protein chicken plate with salad, rice, and garlic sauce. Garlic provides allicin (natural antimicrobial) to support toe healing.",
+          badgeColor: "#10b981",
+          actionTag: "Dinner Fuel"
         },
         {
           id: "d1-3",
-          time: "11:30 PM – 03:00 AM",
-          phase: "💻 Deep Night AI Cash Grind ($80–$150 USD Earned)",
-          locationName: "Quiet Jail Hostel Lounge (75 Nicholas St)",
-          coords: [45.4251, -75.6892],
-          mission: "The hostel lounge is empty and silent. Plug in your new earphones. Complete DataAnnotation.tech starter test and grind 3 hours of high-paying prompt/code evaluations ($20–$40/hr USD).",
-          whoToTalkTo: "AI Tasking Queue",
-          scriptTitle: "High-Focus AI Sprint",
-          scriptText: "Maintain razor-sharp attention to factuality and reasoning rubrics.",
-          badgeColor: "#10b981",
-          actionTag: "Cash Grind"
+          time: "09:00 PM – 11:30 PM",
+          phase: "🎲 Social Unwind & Gaming @ The Loft",
+          locationName: "The Loft / Level One Pub (14 Waller St • 20m)",
+          coords: [45.4255, -75.6885],
+          mission: "Walk 20 steps behind hostel into The Loft ($9 cover). Play board games/video games, chat with friendly students/techies, grab a hot cider.",
+          badgeColor: "#f43f5e",
+          actionTag: "Social Fun"
         },
         {
           id: "d1-4",
-          time: "03:00 AM – 05:00 AM",
-          phase: "🏠 Landlord Inbox Domination (15 Inquiries Queued)",
-          locationName: "Hostel Lounge Desk",
+          time: "11:30 PM – 03:00 AM",
+          phase: "💻 Deep Night Focus & AI Tasking",
+          locationName: "Jail Hostel Lounge (75 Nicholas St)",
           coords: [45.4251, -75.6892],
-          mission: "Send 15 personalized room inquiries on PadMapper and Facebook Housing groups for Sandy Hill / Centretown. Landlords will wake up at 7:00 AM with your message at the very top of their inbox!",
-          whoToTalkTo: "Landlords on PadMapper & FB Groups",
-          scriptTitle: "Morning Top-of-Inbox Landlord Script",
-          scriptText: "Hi! I saw your room listing in Sandy Hill/Centretown and love the location. I'm Jordan, a friendly, quiet remote tech builder in Ottawa looking to move in this weekend (by Sept 5/6). Very clean, reliable, auto-pay rent on the 1st, strictly outdoor smoker. Can I come view the room Thursday afternoon after 1:30 PM?",
-          badgeColor: "#f59e0b",
-          actionTag: "Housing Domination"
+          mission: "Lounge is dead quiet. Plug in new earphones, test AI evaluation platforms in high focus.",
+          badgeColor: "#10b981",
+          actionTag: "Focus Sprint"
         },
         {
           id: "d1-5",
-          time: "05:00 AM – 10:45 AM",
-          phase: "😴 Morning Quiet Sleep Window (Dorm Is Empty)",
-          locationName: "Hostel Bunk (75 Nicholas St)",
+          time: "03:00 AM – 05:00 AM",
+          phase: "🏠 Landlord Top-of-Inbox Outreach",
+          locationName: "Hostel Desk (75 Nicholas St)",
           coords: [45.4251, -75.6892],
-          mission: "Sleep 5.5 hours while tourists wake up and leave the dorm empty and peaceful. Elevate foot on a pillow. Set alarm for 10:45 AM.",
-          whoToTalkTo: "Pure Rest",
-          scriptTitle: "Rest Reset",
-          scriptText: "Wake up at 10:45 AM, shower, and walk 2 minutes to your 11:50 AM appointment at 158 Rideau St.",
-          badgeColor: "#8b5cf6",
-          actionTag: "Quiet Sleep"
+          mission: "Send 15 room messages on PadMapper / FB Marketplace for Sandy Hill. Landlords wake up with your message at the top of inbox at 7 AM!",
+          badgeColor: "#f59e0b",
+          actionTag: "Housing Domination"
         }
       ]
     },
 
-    // --- DAY 2 (THURSDAY, SEPT 3): CLINIC APPOINTMENT (11:50 AM) & ROOM WALKTHROUGHS ---
+    // --- DAY 2 (THURSDAY, SEPT 3): CLINIC (11:50 AM), FRESH LUNCH & VIEWINGS ---
     {
       dayNum: 2,
       dayLabel: "Day 2 (Thu)",
-      theme: "11:50 AM Clinic Appointment (158 Rideau) & Room Viewings",
-      keyMilestone: "Toe treated at Downtown Urgent Care (11:50 AM) + 3 room walkthroughs in Sandy Hill",
+      theme: "11:50 AM Clinic Appointment, Fresh Farm Boy Lunch & Room Viewings",
+      keyMilestone: "Toe treated at 158 Rideau + Farm Boy salad bar + 3 room walkthroughs in Sandy Hill",
       pathCoords: [
-        [45.4251, -75.6892], // Basecamp
-        [45.4268, -75.6902], // Downtown Urgent Care (158 Rideau St @ 11:50 AM)
-        [45.4258, -75.6925], // Shoppers Drug Mart (Rideau Centre)
-        [45.4230, -75.6790], // Somerset St E Viewings
-        [45.4180, -75.6940], // Centretown Viewings
-        [45.4251, -75.6892]  // Basecamp Return
+        [45.4251, -75.6892], // Basecamp Breakfast
+        [45.4268, -75.6902], // Downtown Urgent Care (11:50 AM)
+        [45.4258, -75.6920], // Farm Boy (Lunch)
+        [45.4230, -75.6790], // Sandy Hill Viewings
+        [45.4330, -75.6780]  // Shawarma Palace (Dinner)
       ],
       schedule: [
         {
           id: "d2-1",
-          time: "10:45 AM – 11:30 AM",
-          phase: "Wakeup, Hydration & Clinic Departure",
-          locationName: "Basecamp (75 Nicholas St)",
+          time: "09:30 AM – 10:30 AM",
+          phase: "🍳 BREAKFAST: Saintlo Free Breakfast Kitchen",
+          locationName: "Saintlo Jail Kitchen (75 Nicholas St)",
           coords: [45.4251, -75.6892],
-          mission: "Wake up, shower, drink 500ml water, grab health card/ID. Check incoming replies from your 15 landlord messages.",
-          whoToTalkTo: "Landlord Replies",
-          scriptTitle: "Quick Confirmation",
-          scriptText: "Confirm afternoon walkthrough times for 1:30 PM, 2:30 PM, and 3:30 PM.",
-          badgeColor: "#06b6d4",
-          actionTag: "Morning Prep"
+          mission: "Bagels with peanut butter, whole grain toast, orange juice, and hot coffee ($0.00 free hostel breakfast). Hydrate 500ml water.",
+          badgeColor: "#f59e0b",
+          actionTag: "Free Breakfast"
         },
         {
           id: "d2-2",
           time: "11:35 AM – 12:45 PM",
-          phase: "🏥 APPOINTMENT: Downtown Urgent Care (11:50 AM)",
+          phase: "🏥 CLINIC: Downtown Urgent Care (11:50 AM)",
           locationName: "Downtown Urgent Care (158 Rideau St)",
           coords: [45.4268, -75.6902],
-          mission: "Walk 2 minutes up Nicholas/Waller to 158 Rideau St. Check in at 11:35 AM for your 11:50 AM appointment. Get infected toe nail examined, treated, and get antibiotic prescription.",
-          whoToTalkTo: "Clinic Receptionist & Physician",
-          scriptTitle: "Appointment Check-in Script",
-          scriptText: "Good morning! I'm Jordan, checking in for my 11:50 AM appointment for an infected toe nail. Here is my health card / ID.",
+          mission: "Walk 2 minutes to 158 Rideau St. Check in at 11:35 AM for 11:50 AM appointment. Toe examination & antibiotic prescription.",
           badgeColor: "#ef4444",
           actionTag: "Confirmed Clinic"
         },
         {
           id: "d2-3",
           time: "12:45 PM – 01:30 PM",
-          phase: "Rx Fill & Shawarma Recovery Lunch",
-          locationName: "Shoppers Drug Mart & 3 Brothers Shawarma",
-          coords: [45.4258, -75.6925],
-          mission: "Fill antibiotic prescription at Shoppers. Grab high-protein lunch at 3 Brothers Shawarma to fuel up for afternoon room viewings.",
-          whoToTalkTo: "Pharmacist",
-          scriptTitle: "Pharmacy Script",
-          scriptText: "Hi! Dropping off this antibiotic prescription from Downtown Urgent Care. Also grabbing a pack of sterile non-stick gauze.",
-          badgeColor: "#06b6d4",
-          actionTag: "Rx & Fuel"
+          phase: "🥗 LUNCH: Farm Boy Hot Salad & Protein Bar",
+          locationName: "Farm Boy (CF Rideau Level 1 • 180m)",
+          coords: [45.4258, -75.6920],
+          mission: "Fresh salad bar with grilled chicken breast + fresh berry bowl ($8–$11). Clean micronutrients for cell repair without heavy food coma.",
+          badgeColor: "#10b981",
+          actionTag: "Clean Lunch"
         },
         {
           id: "d2-4",
           time: "01:30 PM – 05:30 PM",
-          phase: "Sandy Hill & Centretown Room Viewings (3 Stops)",
+          phase: "🏠 Sandy Hill & Centretown Room Walkthroughs",
           locationName: "Sandy Hill (Somerset E / Nelson / Chapel)",
           coords: [45.4230, -75.6790],
-          mission: "Attend 3 in-person room walkthroughs. Inspect: Wi-Fi signal, room locks, kitchen cleanliness, noise level, and outdoor smoking patio.",
-          whoToTalkTo: "Landlords & Current Housemates",
-          scriptTitle: "In-Person Viewing Script",
-          scriptText: "The room looks great. Are all utilities and high-speed internet included in the $850? Also, just confirming outdoor smoking on the back patio is fine? If I apply today with first and last month's rent, could I move in this Saturday, Sept 5th?",
-          badgeColor: "#10b981",
+          mission: "Attend 3 room viewings. Inspect Wi-Fi signal, room locks, kitchen cleanliness, outdoor smoking patio, and lease terms.",
+          badgeColor: "#06b6d4",
           actionTag: "Room Walkthrough"
         },
         {
           id: "d2-5",
-          time: "06:30 PM – 09:30 PM",
-          phase: "Lease Review & Backup Applications",
-          locationName: "Basecamp Lounge",
-          coords: [45.4251, -75.6892],
-          mission: "Rank today's 3 rooms. Send deposit commitment to top choice.",
-          whoToTalkTo: "Top Landlord Choice",
-          scriptTitle: "Deposit Commitment Script",
-          scriptText: "Hi! I really liked the room on [Street]. I'm ready to e-transfer the standard deposit and sign the Ontario Standard Form Lease tonight to secure move-in for this weekend.",
-          badgeColor: "#f59e0b",
-          actionTag: "Lease Prep"
+          time: "07:00 PM – 08:30 PM",
+          phase: "🥙 DINNER: Shawarma Palace Giant Platter",
+          locationName: "Shawarma Palace (464 Rideau St)",
+          coords: [45.4330, -75.6780],
+          mission: "Legendary giant mixed platter ($16.50). Huge portion that easily provides dinner tonight plus refrigerated leftovers for tomorrow.",
+          badgeColor: "#10b981",
+          actionTag: "Dinner Feast"
         }
       ]
     },
 
-    // --- DAY 3 (FRIDAY, SEPT 4): LEASE SIGN & DEPOSIT LOCK ---
+    // --- DAY 3 (FRIDAY, SEPT 4): COFFEE, GROCERY SPRINT & LEASE LOCK ---
     {
       dayNum: 3,
       dayLabel: "Day 3 (Fri)",
-      theme: "Secure Shelter: Sign Lease & Pay Deposit",
-      keyMilestone: "CRITICAL: Lock down your room & sign lease today! Move-in scheduled for tomorrow.",
+      theme: "Morning Artisan Coffee, Budget Grocery Sprint & Room Lease Lock",
+      keyMilestone: "Select top room, verify Ontario Standard Lease, and sign agreement",
       pathCoords: [
-        [45.4251, -75.6892], // Basecamp
-        [45.4190, -75.6980], // Centretown (Bank & Metcalfe)
-        [45.4230, -75.6790], // Sandy Hill Landlord Office
-        [45.4251, -75.6892]  // Basecamp Return
+        [45.4290, -75.6905], // Bridgehead Dalhousie (Breakfast)
+        [45.4285, -75.6912], // Giant Tiger (Lunch & Snacks)
+        [45.4230, -75.6790], // Landlord Office
+        [45.4288, -75.6928]  // El Furniture Warehouse (Dinner)
       ],
       schedule: [
         {
           id: "d3-1",
-          time: "09:00 AM – 12:00 PM",
-          phase: "Final Room Walkthrough & Decision",
-          locationName: "Top Choice Room (Sandy Hill / Centretown)",
-          coords: [45.4230, -75.6790],
-          mission: "Walk through top room choice. Verify landlord is legitimate (matches property ownership / building management).",
-          whoToTalkTo: "Landlord / Primary Leaseholder",
-          scriptTitle: "Standard Lease Verification",
-          scriptText: "I'd love to confirm we're using the standard Ontario Form of Lease. I have first and last month's rent ready for transfer upon lease signing.",
-          badgeColor: "#10b981",
-          actionTag: "Lock Shelter"
+          time: "09:30 AM – 10:30 AM",
+          phase: "☕ BREAKFAST: Bridgehead Coffee & Artisan Wrap",
+          locationName: "Bridgehead Coffee (224 Dalhousie St)",
+          coords: [45.4290, -75.6905],
+          mission: "Fair-trade dark roast coffee + egg & cheese breakfast wrap ($6.50). Prime mental focus in quiet cafe workspace.",
+          badgeColor: "#06b6d4",
+          actionTag: "Cafe Breakfast"
         },
         {
           id: "d3-2",
-          time: "01:00 PM – 04:00 PM",
-          phase: "Sign Ontario Standard Lease & Pay Deposit",
-          locationName: "Basecamp / Landlord Location",
-          coords: [45.4251, -75.6892],
-          mission: "Sign lease agreement. Transfer first and last month deposit ($1,600). Receive keys / set key handover time for Saturday morning.",
-          whoToTalkTo: "Landlord",
-          scriptTitle: "Key Handover Script",
-          scriptText: "Deposit has been sent! What time tomorrow morning can I meet you to collect keys and move my bags in?",
-          badgeColor: "#06b6d4",
-          actionTag: "Sign & Secure"
+          time: "01:00 PM – 02:00 PM",
+          phase: "🛒 LUNCH: Giant Tiger Market Fuel",
+          locationName: "Giant Tiger (98 George St)",
+          coords: [45.4285, -75.6912],
+          mission: "Grab quick nutritious staples: Greek yogurt, bananas ($0.79/lb), almonds, and whole wheat pita ($5.00 total).",
+          badgeColor: "#f59e0b",
+          actionTag: "Budget Lunch"
         },
         {
           id: "d3-3",
-          time: "05:00 PM – 09:00 PM",
-          phase: "Celebrate Housing & Pack Bags at Basecamp",
-          locationName: "Jail Basecamp (75 Nicholas St)",
-          coords: [45.4251, -75.6892],
-          mission: "Housing is locked down! Pack bags, inform hostel front desk of Saturday checkout, and do 2 hours of AI tasks to replenish buffer.",
-          whoToTalkTo: "Hostel Reception",
-          scriptTitle: "Hostel Checkout Notice",
-          scriptText: "Hi, just letting you know I will be checking out tomorrow (Saturday) morning by 11:00 AM. Thank you!",
-          badgeColor: "#3b82f6",
-          actionTag: "Checkout Prep"
+          time: "02:30 PM – 05:00 PM",
+          phase: "🏠 Sign Lease & Transfer Deposit ($1,600)",
+          locationName: "Selected Room / Sandy Hill",
+          coords: [45.4230, -75.6790],
+          mission: "Sign Ontario Standard Form of Lease. E-transfer standard first/last month deposit ($1,500–$1,700). Arrange key pickup for move-in.",
+          badgeColor: "#10b981",
+          actionTag: "Sign Lease"
+        },
+        {
+          id: "d3-4",
+          time: "07:00 PM – 08:30 PM",
+          phase: "🍔 DINNER: El Furniture Warehouse ($7.95 Feast)",
+          locationName: "El Furniture Warehouse (77 Clarence St)",
+          coords: [45.4288, -75.6928],
+          mission: "Celebrate housing lock with an all-item $7.95 works burger or quinoa power bowl. High-energy lively ByWard Market vibe.",
+          badgeColor: "#f43f5e",
+          actionTag: "Celebration Dinner"
         }
       ]
     },
 
-    // --- DAY 4 (SATURDAY, SEPT 5): MOVE-IN DAY ---
+    // --- DAY 4 (SATURDAY, SEPT 5): MOVE PREP, FOOD COURT & 3 BROTHERS ---
     {
       dayNum: 4,
       dayLabel: "Day 4 (Sat)",
-      theme: "Move-In Day: Stop Daily Hostel Bleed",
-      keyMilestone: "SHELTER ACHIEVED! Move bags into permanent room ($800/mo vs $45/night)",
+      theme: "Move-In Preparation, Quick Food Court Fuel & Shawarma Reload",
+      keyMilestone: "Pack bags, verify key pickup time, and confirm move-in logistics",
       pathCoords: [
-        [45.4251, -75.6892], // Basecamp Checkout
-        [45.4230, -75.6790], // Move to Sandy Hill Room
-        [45.4270, -75.6850], // Loblaws / Giant Tiger Grocery Run
-        [45.4230, -75.6790]  // New Permanent Home
+        [45.4251, -75.6892], // Basecamp Breakfast
+        [45.4258, -75.6920], // Rideau Food Court (Lunch)
+        [45.4270, -75.6880], // 3 Brothers Shawarma (Dinner)
+        [45.4255, -75.6885]  // The Loft (Late Night)
       ],
       schedule: [
         {
           id: "d4-1",
-          time: "09:30 AM – 11:00 AM",
-          phase: "Hostel Checkout & Key Collection",
-          locationName: "75 Nicholas St ➔ New Room",
+          time: "09:30 AM – 10:30 AM",
+          phase: "🍳 BREAKFAST: Saintlo Free Hostel Breakfast",
+          locationName: "Hostel Kitchen (75 Nicholas St)",
           coords: [45.4251, -75.6892],
-          mission: "Check out of Saintlo Jail Hostel. Walk bags to your new room in Sandy Hill/Centretown. Collect keys from landlord.",
-          whoToTalkTo: "Landlord / Housemates",
-          scriptTitle: "Move-In Greeting",
-          scriptText: "Hey everyone! I'm Jordan, just moving my bags into room #2. Really excited to be here!",
-          badgeColor: "#10b981",
-          actionTag: "Move-In"
+          mission: "Toast with peanut butter, cereal, bananas, hot tea ($0.00).",
+          badgeColor: "#f59e0b",
+          actionTag: "Free Breakfast"
         },
         {
           id: "d4-2",
-          time: "12:00 PM – 03:00 PM",
-          phase: "Room Setup & Gigabit Wi-Fi Test",
-          locationName: "New Room (Permanent Base)",
-          coords: [45.4230, -75.6790],
-          mission: "Unpack, set up desk, connect laptop to Bell Fibe Wi-Fi, test audio/camera with new earphones.",
-          whoToTalkTo: "Housemates (Wi-Fi password & kitchen shelf)",
-          scriptTitle: "Housemate Kitchen Script",
-          scriptText: "Hey, which shelf in the fridge and pantry is free for me to use? Also, where do we keep recycling?",
+          time: "01:30 PM – 02:30 PM",
+          phase: "🍜 LUNCH: Rideau Centre Dining Hall",
+          locationName: "Rideau Centre Food Court (Level 2)",
+          coords: [45.4258, -75.6920],
+          mission: "Fast, filling midday fuel: Subway 6-inch sub or Thai Express chicken pad sew ($9–$12).",
           badgeColor: "#06b6d4",
-          actionTag: "Setup Home"
+          actionTag: "Quick Lunch"
         },
         {
           id: "d4-3",
-          time: "04:00 PM – 07:00 PM",
-          phase: "🥗 Master $50 Grocery Run (1-Week Staples)",
-          locationName: "Giant Tiger (98 George) / Loblaws (Rideau)",
-          coords: [45.4270, -75.6850],
-          mission: "Buy 1 week of performance staples: eggs, oats, peanut butter, chicken breast, sweet potatoes, broccoli, bananas. Keep grocery total under $50.",
-          whoToTalkTo: "Cashier",
-          scriptTitle: "Budget Grocery Strategy",
-          scriptText: "Stick strictly to staple whole foods to keep weekly food spend under $40–$50.",
-          badgeColor: "#f59e0b",
-          actionTag: "Budget Fuel"
+          time: "07:30 PM – 08:45 PM",
+          phase: "🥙 DINNER: 3 Brothers Chicken Shawarma Plate",
+          locationName: "3 Brothers Shawarma (160 Rideau St)",
+          coords: [45.4270, -75.6880],
+          mission: "Hot chicken shawarma plate with garlic potatoes and hummus ($15.99).",
+          badgeColor: "#10b981",
+          actionTag: "Dinner"
+        },
+        {
+          id: "d4-4",
+          time: "11:00 PM – 01:00 AM",
+          phase: "🎮 LATE NIGHT: The Loft Game Pub",
+          locationName: "The Loft (14 Waller St • 20m)",
+          coords: [45.4255, -75.6885],
+          mission: "Late night warm cider and snacks while socializing.",
+          badgeColor: "#f43f5e",
+          actionTag: "Late Night"
         }
       ]
     },
 
-    // --- DAY 5 (SUNDAY, SEPT 6): SETTLE & AI INCOME SPRINT ---
+    // --- DAY 5 (SUNDAY, SEPT 6): ARTISAN CAFE, LOBLAWS HAUL & HOME DINNER ---
     {
       dayNum: 5,
       dayLabel: "Day 5 (Sun)",
-      theme: "Permanent Base Settled & AI Income Sprint",
-      keyMilestone: "Complete 5 hours of remote AI tasks ($125–$200 USD earned from home desk)",
+      theme: "Sunday Artisan Coffee, Loblaws Whole-Food Haul & First Home Meal",
+      keyMilestone: "Complete $50 grocery cart & stock new apartment fridge",
       pathCoords: [
-        [45.4230, -75.6790], // Home Desk
-        [45.4260, -75.6750], // Strathcona Park Walk
-        [45.4230, -75.6790]  // Home Desk
+        [45.4278, -75.6865], // Happy Goat Coffee (Breakfast)
+        [45.4310, -75.6820], // Loblaws Rideau (Grocery Haul)
+        [45.4230, -75.6790], // New Home Kitchen
+        [45.4145, -75.6890]  // Elgin Street Diner
       ],
       schedule: [
         {
           id: "d5-1",
-          time: "09:00 AM – 02:00 PM",
-          phase: "5-Hour Remote AI Task Sprint",
-          locationName: "New Room Desk",
-          coords: [45.4230, -75.6790],
-          mission: "Work 5 focused hours on DataAnnotation / Outlier. Payout target: $125–$200 USD ($170–$270 CAD) earned directly from your room.",
-          whoToTalkTo: "AI Model Evaluation Queue",
-          scriptTitle: "Deep Tasking",
-          scriptText: "Maintain deep focus in 90-minute blocks with short stretch breaks.",
-          badgeColor: "#10b981",
-          actionTag: "Cash Sprint"
+          time: "10:00 AM – 11:00 AM",
+          phase: "☕ BREAKFAST: Happy Goat Cold Brew & Pastry",
+          locationName: "Happy Goat Coffee (229 Rideau St)",
+          coords: [45.4278, -75.6865],
+          mission: "Artisan cold brew coffee + spinach/feta breakfast pastry ($6.50).",
+          badgeColor: "#06b6d4",
+          actionTag: "Sunday Coffee"
         },
         {
           id: "d5-2",
-          time: "03:00 PM – 05:00 PM",
-          phase: "Decompress Walk in Strathcona Park",
-          locationName: "Strathcona Park (Rideau River)",
-          coords: [45.4260, -75.6750],
-          mission: "Walk along the Rideau River path in Sandy Hill. Celebrate having a secure roof over your head and steady runway!",
-          whoToTalkTo: "Local park walkers",
-          scriptTitle: "Mental Reset",
-          scriptText: "Take in the fresh air and river view. You successfully transitioned from hostel to permanent home in 4 days.",
-          badgeColor: "#8b5cf6",
-          actionTag: "Mental Reset"
+          time: "01:30 PM – 03:00 PM",
+          phase: "🛒 LUNCH & HAUL: Loblaws Rotisserie & $50 Grocery Run",
+          locationName: "Loblaws Rideau (363 Rideau St)",
+          coords: [45.4310, -75.6820],
+          mission: "Buy whole rotisserie chicken ($12.99) for lunch + stock weekly cart: eggs, oats, sweet potatoes, broccoli, peanut butter.",
+          badgeColor: "#10b981",
+          actionTag: "Grocery Haul"
+        },
+        {
+          id: "d5-3",
+          time: "07:00 PM – 08:30 PM",
+          phase: "🥗 DINNER: Home-Cooked Protein & Veggies",
+          locationName: "New Apartment Kitchen (Sandy Hill)",
+          coords: [45.4230, -75.6790],
+          mission: "Cook chicken breast, baked sweet potato, and steamed broccoli ($4.00 home cost). Zero restaurant markup!",
+          badgeColor: "#10b981",
+          actionTag: "Home Cooking"
+        },
+        {
+          id: "d5-4",
+          time: "11:30 PM – 01:00 AM",
+          phase: "🥞 LATE NIGHT: Elgin Street Diner (Optional Outpost)",
+          locationName: "Elgin Street Diner (374 Elgin St)",
+          coords: [45.4145, -75.6890],
+          mission: "Late night coffee refill or poutine treat in iconic 24/7 booth.",
+          badgeColor: "#f59e0b",
+          actionTag: "24/7 Diner"
         }
       ]
     },
 
-    // --- DAY 6 (MONDAY, SEPT 7 - LABOUR DAY HOLIDAY): LOW-BURN STRATEGY ---
+    // --- DAY 6 (MONDAY, SEPT 7): CHECKOUT HOSTEL, MOVE IN & FRESH FUEL ---
     {
       dayNum: 6,
       dayLabel: "Day 6 (Mon)",
-      theme: "Labour Day: Low-Burn & Portfolio Prep",
-      keyMilestone: "Polish 2 live AI demo links to launch Tuesday tech blitz",
+      theme: "Hostel Checkout, Move Bags into Room & Settling Fuel",
+      keyMilestone: "OFFICIAL MOVE-IN DAY! Checkout of 10-bed dorm, unpack in private room",
       pathCoords: [
-        [45.4230, -75.6790], // Home
-        [45.4255, -75.6885], // The Loft / ByWard
-        [45.4230, -75.6790]  // Home
+        [45.4251, -75.6892], // Final Hostel Breakfast & Checkout
+        [45.4230, -75.6790], // Move to New Room
+        [45.4258, -75.6920], // Farm Boy (Lunch)
+        [45.4288, -75.6928]  // El Furniture (Dinner)
       ],
       schedule: [
         {
           id: "d6-1",
-          time: "10:00 AM – 02:00 PM",
-          phase: "AI Demo Polishing & GitHub README Cleanup",
-          locationName: "Home Desk",
-          coords: [45.4230, -75.6790],
-          mission: "Clean up live deployment URLs for your AI tools (Vercel/Netlify), write crisp 3-sentence descriptions for Tuesday pitches.",
-          whoToTalkTo: "Independent Building",
-          scriptTitle: "Portfolio Readiness",
-          scriptText: "Ensure all demo links load fast on mobile and desktop with working live features.",
-          badgeColor: "#06b6d4",
-          actionTag: "Tech Build"
+          time: "09:30 AM – 11:00 AM",
+          phase: "🍳 BREAKFAST & CHECKOUT: Final Hostel Morning",
+          locationName: "Saintlo Jail Hostel (75 Nicholas St)",
+          coords: [45.4251, -75.6892],
+          mission: "Final free breakfast at hostel. Check out of 10-bed dorm by 11:00 AM. Walk bags over to your new room.",
+          badgeColor: "#10b981",
+          actionTag: "Hostel Checkout"
         },
         {
           id: "d6-2",
-          time: "03:00 PM – 07:00 PM",
-          phase: "Holiday Social Meetup or Remote Tasks",
-          locationName: "The Loft / Rideau Canal",
-          coords: [45.4255, -75.6885],
-          mission: "Casual afternoon gaming at The Loft or additional 2 hours of remote AI tasks to stack savings.",
-          whoToTalkTo: "Local Gamers / Community",
-          scriptTitle: "Casual Networking",
-          scriptText: "Hey! What game are you playing? Mind if I jump in for the next round?",
+          time: "01:30 PM – 02:30 PM",
+          phase: "🥗 LUNCH: Farm Boy Hot Counter",
+          locationName: "Farm Boy (CF Rideau Level 1)",
+          coords: [45.4258, -75.6920],
+          mission: "Grab hot grilled chicken, roasted vegetables, and fresh juice ($10.00).",
+          badgeColor: "#06b6d4",
+          actionTag: "Move-In Fuel"
+        },
+        {
+          id: "d6-3",
+          time: "07:00 PM – 08:30 PM",
+          phase: "🍔 DINNER: El Furniture Warehouse ($7.95)",
+          locationName: "El Furniture Warehouse (77 Clarence St)",
+          coords: [45.4288, -75.6928],
+          mission: "Celebrate Day 1 in your permanent home with a cheap, delicious $7.95 burger & salad.",
           badgeColor: "#f43f5e",
-          actionTag: "Social"
+          actionTag: "Dinner"
         }
       ]
     },
 
-    // --- DAY 7 (TUESDAY, SEPT 8): TECH BLITZ & FIRST BUSINESS WEEK ---
+    // --- DAY 7 (TUESDAY, SEPT 8): FIRST BUSINESS WEEK TECH BLITZ FUEL ---
     {
       dayNum: 7,
       dayLabel: "Day 7 (Tue)",
-      theme: "Full Business Week Tech & Staffing Blitz",
-      keyMilestone: "Pitch 10 Ottawa tech founders & check in with Altis Recruitment with shelter 100% locked",
+      theme: "First Business Week: Tech Blitz, Founder Coffee & High-Performance Fuel",
+      keyMilestone: "Pitch 10 Ottawa tech founders & visit Bayview Yards with stable home base",
       pathCoords: [
-        [45.4230, -75.6790], // Home
-        [45.4095, -75.7230], // Bayview Yards (Invest Ottawa)
-        [45.4210, -75.6980], // Altis Recruitment Downtown
-        [45.4230, -75.6790]  // Home
+        [45.4278, -75.6865], // Happy Goat Coffee (Breakfast)
+        [45.4095, -75.7230], // Bayview Yards Cafe (Lunch)
+        [45.4270, -75.6880]  // 3 Brothers Shawarma (Dinner)
       ],
       schedule: [
         {
           id: "d7-1",
-          time: "08:30 AM – 12:00 PM",
-          phase: "Bayview Yards Startup Blitz",
-          locationName: "Bayview Yards (7 Bayview Station Rd)",
-          coords: [45.4095, -75.7230],
-          mission: "Take Line 1 LRT to Bayview. Work from the open startup cafe. Pitch 5 early-stage founders on AI workflow automation contracting.",
-          whoToTalkTo: "Invest Ottawa Startup Founders",
-          scriptTitle: "Bayview Founder Pitch",
-          scriptText: "Hi! I build custom AI workflow automations and rapid prototypes with modern LLM tools. Are you looking for any fast technical support or internal tool prototyping?",
+          time: "08:30 AM – 09:30 AM",
+          phase: "☕ BREAKFAST: Happy Goat Double Espresso & Wrap",
+          locationName: "Happy Goat Coffee (229 Rideau St)",
+          coords: [45.4278, -75.6865],
+          mission: "High-grade morning espresso to prime mental focus before founder pitch blitz ($5.50).",
           badgeColor: "#06b6d4",
-          actionTag: "Tech Blitz"
+          actionTag: "Tech Breakfast"
         },
         {
           id: "d7-2",
-          time: "01:30 PM – 04:30 PM",
-          phase: "Altis / ExcelHR Downtown Check-in",
-          locationName: "Altis Recruitment (100 Queen St)",
-          coords: [45.4210, -75.6980],
-          mission: "Follow up with government and corporate staffing recruiters on entry-level tech and data contract roles.",
-          whoToTalkTo: "Staffing Recruiter",
-          scriptTitle: "Recruiter In-Person Follow-up",
-          scriptText: "Hi, I submitted my application for tech/data contracting. I'm settled permanently in Sandy Hill with full-time availability and ready for immediate placement.",
+          time: "01:00 PM – 02:00 PM",
+          phase: "🥗 LUNCH: Bayview Yards Startup Cafe",
+          locationName: "Bayview Yards (7 Bayview Station Rd)",
+          coords: [45.4095, -75.7230],
+          mission: "Fresh sandwich and iced tea while networking with early-stage AI/tech founders at Invest Ottawa hub.",
           badgeColor: "#10b981",
-          actionTag: "Staffing Blitz"
+          actionTag: "Startup Lunch"
+        },
+        {
+          id: "d7-3",
+          time: "07:00 PM – 08:30 PM",
+          phase: "🥙 DINNER: 3 Brothers High-Protein Shawarma",
+          locationName: "3 Brothers Shawarma (160 Rideau St)",
+          coords: [45.4270, -75.6880],
+          mission: "Chicken shawarma plate reload (45g protein) to cap off successful Week 1 relocation sprint.",
+          badgeColor: "#10b981",
+          actionTag: "Dinner Feast"
         }
       ]
     }

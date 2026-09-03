@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
   <!-- Unified Mobile-First Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=3.2.0">
+  <link rel="stylesheet" href="style.css?v=3.3.0">
 </head>
 <body>
 
@@ -71,8 +71,10 @@
     <!-- 1. FULLSCREEN LEAFLET MAP (PERMANENT BASE) -->
     <div id="map-container" class="map-layer"></div>
 
-    <!-- FLOATING MAP DRAWING CONTROLS -->
+    <!-- FLOATING MAP DRAWING, FOOD & AMENITIES LAYER CONTROLS -->
     <div class="map-floating-tools" id="mapDrawingToolbar">
+      <button class="map-tool-btn" id="toggleFoodPinsBtn" title="Show all Breakfast, Lunch & Dinner spots">🥗</button>
+      <button class="map-tool-btn" id="toggleAmenitiesPinsBtn" title="Show Free Public Restrooms & Cold Water Stations">🚻</button>
       <button class="map-tool-btn" id="drawPenBtn" title="Draw freehand on map">✏️</button>
       <button class="map-tool-btn" id="drawCircleBtn" title="Draw search zone">⭕</button>
       <button class="map-tool-btn" id="dropPinBtn" title="Drop custom pin">📍</button>
@@ -138,6 +140,15 @@
             <button class="btn-compact primary" id="zoomClinicBtn">📍 View on Map</button>
             <a href="tel:+16134829051" class="btn-compact secondary">📞 Call Clinic</a>
           </div>
+        </div>
+
+        <!-- Free Restrooms & Water Stations Quick Card -->
+        <div style="background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.28); border-radius: var(--radius-md); padding: 8px 10px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--cyan);">🚻 Free Restrooms & 💧 Water Refill</div>
+            <div style="font-size: 0.72rem; color: var(--text-muted);">Rideau Centre (L1 & L2), NAC Atrium, uOttawa, Main Library</div>
+          </div>
+          <button class="btn-compact primary" id="deckShowAmenitiesBtn" style="font-size: 0.7rem; white-space: nowrap;">📍 Show All</button>
         </div>
 
         <!-- 7-Day Day Selector Strip -->
@@ -342,8 +353,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   
   <!-- Core Scripts with Cache Buster -->
-  <script src="data.js?v=3.2.0"></script>
-  <script src="lifeBrain.js?v=3.2.0"></script>
-  <script src="app.js?v=3.2.0"></script>
+  <script src="data.js?v=3.3.0"></script>
+  <script src="lifeBrain.js?v=3.3.0"></script>
+  <script src="app.js?v=3.3.0"></script>
 </body>
 </html>

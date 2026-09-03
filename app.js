@@ -30,7 +30,11 @@
     isDrawing: false,
     currentDrawingPoints: [],
     tempPolyline: null,
-    drawnLayers: []
+    drawnLayers: [],
+
+    // Food & Amenities Layers
+    foodDirectoryMarkers: [],
+    amenitiesDirectoryMarkers: []
   };
 
   window.state = state;
@@ -265,7 +269,28 @@
         if (mapEl) mapEl.style.cursor = 'crosshair';
         showToast(`✏️ Drawing Tool: ${tool.toUpperCase()} Active`);
       }
-    };
+    const foodToggleBtn = document.getElementById('toggleFoodPinsBtn');
+    const amenitiesToggleBtn = document.getElementById('toggleAmenitiesPinsBtn');
+    const deckAmenitiesBtn = document.getElementById('deckShowAmenitiesBtn');
+
+    if (foodToggleBtn) {
+      foodToggleBtn.addEventListener('click', () => {
+        toggleFoodDirectoryLayer(foodToggleBtn);
+      });
+    }
+
+    if (amenitiesToggleBtn) {
+      amenitiesToggleBtn.addEventListener('click', () => {
+        toggleAmenitiesDirectoryLayer(amenitiesToggleBtn);
+      });
+    }
+
+    if (deckAmenitiesBtn) {
+      deckAmenitiesBtn.addEventListener('click', () => {
+        setMobileTab('map');
+        toggleAmenitiesDirectoryLayer(amenitiesToggleBtn);
+      });
+    }
 
     if (penBtn) penBtn.addEventListener('click', () => setDrawingTool('pen'));
     if (circleBtn) circleBtn.addEventListener('click', () => setDrawingTool('circle'));
@@ -422,6 +447,88 @@
       </div>
     `);
     state.customPinMarkers.push(marker);
+  }
+
+  // FOOD DIRECTORY MAP LAYER TOGGLE
+  function toggleFoodDirectoryLayer(btn) {
+    if (!state.leafletMap || !window.OTTAWA_DATA || !window.OTTAWA_DATA.foodMapDirectory) return;
+
+    if (state.foodDirectoryMarkers.length > 0) {
+      state.foodDirectoryMarkers.forEach(m => m.remove());
+      state.foodDirectoryMarkers = [];
+      if (btn) btn.classList.remove('active');
+      showToast("🥗 Food spots layer hidden");
+    } else {
+      window.OTTAWA_DATA.foodMapDirectory.forEach(item => {
+        const foodIcon = L.divIcon({
+          className: 'food-pin-wrapper',
+          html: `
+            <div style="background: #0b0f19; border: 2px solid #f59e0b; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 0 12px #f59e0b;">
+              ${item.icon || '🥗'}
+            </div>
+          `,
+          iconSize: [30, 30],
+          iconAnchor: [15, 15]
+        });
+
+        const marker = L.marker(item.coords, { icon: foodIcon }).addTo(state.leafletMap);
+        marker.bindPopup(`
+          <div style="padding: 4px; font-family: var(--font-sans);">
+            <div style="font-size: 0.68rem; color: #f59e0b; font-family: var(--font-mono); font-weight: 700;">${item.categoryName}</div>
+            <h4 style="color: #fff; font-size: 0.95rem; margin: 2px 0;">${item.name}</h4>
+            <p style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 2px;">${item.hours} • ${item.priceRange}</p>
+            <p style="font-size: 0.74rem; color: #94a3b8; line-height: 1.35; margin-bottom: 4px;">${item.topPicks}</p>
+            <div style="font-size: 0.7rem; color: #06b6d4; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 3px;">📍 ${item.distance} • ${item.address}</div>
+          </div>
+        `);
+        state.foodDirectoryMarkers.push(marker);
+      });
+
+      if (btn) btn.classList.add('active');
+      showToast("🥗 Food spots active (Tap pins for menus & hours)");
+    }
+  }
+
+  // FREE RESTROOMS & WATER REFILL MAP LAYER TOGGLE
+  function toggleAmenitiesDirectoryLayer(btn) {
+    if (!state.leafletMap || !window.OTTAWA_DATA || !window.OTTAWA_DATA.amenitiesMapDirectory) return;
+
+    if (state.amenitiesDirectoryMarkers.length > 0) {
+      state.amenitiesDirectoryMarkers.forEach(m => m.remove());
+      state.amenitiesDirectoryMarkers = [];
+      if (btn) btn.classList.remove('active');
+      showToast("🚻 Restrooms & Water layer hidden");
+    } else {
+      window.OTTAWA_DATA.amenitiesMapDirectory.forEach(item => {
+        const isWater = item.type === 'water';
+        const borderColor = isWater ? '#06b6d4' : '#3b82f6';
+        const amenityIcon = L.divIcon({
+          className: 'amenity-pin-wrapper',
+          html: `
+            <div style="background: #0b0f19; border: 2px solid ${borderColor}; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 0 12px ${borderColor};">
+              ${item.icon || '🚻'}
+            </div>
+          `,
+          iconSize: [30, 30],
+          iconAnchor: [15, 15]
+        });
+
+        const marker = L.marker(item.coords, { icon: amenityIcon }).addTo(state.leafletMap);
+        marker.bindPopup(`
+          <div style="padding: 4px; font-family: var(--font-sans);">
+            <div style="font-size: 0.68rem; color: #06b6d4; font-family: var(--font-mono); font-weight: 700;">${item.categoryLabel}</div>
+            <h4 style="color: #fff; font-size: 0.95rem; margin: 2px 0;">${item.name}</h4>
+            <p style="font-size: 0.78rem; color: #10b981; font-weight: 700; margin-bottom: 2px;">${item.access} • ${item.hours}</p>
+            <p style="font-size: 0.74rem; color: #cbd5e1; line-height: 1.35; margin-bottom: 4px;">📍 ${item.floorDetails}</p>
+            <div style="font-size: 0.7rem; color: #f59e0b; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 3px;">💡 ${item.proTip}</div>
+          </div>
+        `);
+        state.amenitiesDirectoryMarkers.push(marker);
+      });
+
+      if (btn) btn.classList.add('active');
+      showToast("🚻 Free Restrooms & 💧 Water Refills active!");
+    }
   }
 
   // 5. LIFEBRAIN SYNC
