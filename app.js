@@ -1,17 +1,15 @@
 /**
- * LifeGuide AI: Controller & Interactive Spatial Canvas Engine
- * Unified Single-Screen Life Cockpit with Freehand Map Drawing, Omni-Stream NLP & State Sync
+ * LifeGuide AI: Master Mobile-First Controller & Spatial Canvas
+ * Single-Screen Unified Life OS with Zero Clutter
  */
 
 (function () {
   'use strict';
 
-  // Global UI & Map State
   const state = {
     leafletMap: null,
     currentDay: 1,
-    activeFilter: 'battleplan',
-    activeDeck: 'copilot',
+    activeTab: 'map', // 'map' | 'action' | 'housing' | 'notes' | 'nutrition'
     
     // GPS & Compass State
     userCoords: null,
@@ -19,18 +17,15 @@
     userGpsMarker: null,
     userGpsCircle: null,
     dynamicUserRouteLine: null,
-    arrivedVenueId: null,
-    totalDistanceWalkedMeters: 0,
-    lastPosition: null,
 
-    // Map Layers & Markers
+    // Map Markers & Layers
     markersMap: {},
     routePolyline: null,
     routeGlowPolyline: null,
     customPinMarkers: [],
 
-    // Freehand Drawing Engine State
-    drawingMode: null, // null | 'pen' | 'circle' | 'pin'
+    // Drawing State
+    drawingMode: null,
     activeDrawColor: '#06b6d4',
     isDrawing: false,
     currentDrawingPoints: [],
@@ -40,46 +35,32 @@
 
   window.state = state;
 
-  // --- INITIALIZATION ON DOM READY ---
   document.addEventListener('DOMContentLoaded', () => {
-    initClock();
     initLeafletMap();
-    initLifeBrainSync();
-    initOmniStream();
+    initMobileNavigation();
+    initOmniDrawer();
     initMapDrawingEngine();
-    initDeckNavigation();
+    initLifeBrainSync();
     initManualNotepad();
     initHousingPipeline();
-    initRunwayDeck();
-    initChronoNutritionDeck();
     initDirectionalGps();
     initModals();
 
     // Render Initial Day
     renderActiveDay(1);
-    showToast("🧠 LifeGuide AI Cockpit Initialized!");
+    
+    // On mobile start in clean map mode
+    if (window.innerWidth <= 860) {
+      setMobileTab('map');
+    }
   });
 
-  // 1. LIVE CLOCK (OTTAWA TIME)
-  function initClock() {
-    const clockEl = document.getElementById('liveClockText');
-    const update = () => {
-      const now = new Date();
-      if (clockEl) {
-        clockEl.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      }
-    };
-    update();
-    setInterval(update, 10000);
-  }
-
-  // 2. LEAFLET MAP INITIALIZATION (PERSISTENT CORE)
+  // 1. LEAFLET GIS MAP (PERMANENT BASE)
   function initLeafletMap() {
     const mapContainer = document.getElementById('map-container');
     if (!mapContainer) return;
 
-    // Center on Saintlo Ottawa Jail Hostel (75 Nicholas St)
-    const basecampCoords = [45.4251, -75.6892];
+    const basecampCoords = [45.4251, -75.6892]; // Saintlo Jail (75 Nicholas St)
     state.leafletMap = L.map('map-container', {
       center: basecampCoords,
       zoom: 15,
@@ -89,162 +70,182 @@
 
     window.leafletMap = state.leafletMap;
 
-    // Esri World Dark Gray Canvas Base (Zero API Keys, Pure Native Dark Cartography)
+    // Esri World Dark Gray Canvas Base (Zero API Key Requirement)
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 16,
-      attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+      attribution: 'Tiles &copy; Esri'
     }).addTo(state.leafletMap);
 
-    // Esri World Dark Gray Reference Overlay (Crisp Street Labels & Boundaries)
+    // Esri Reference Overlay (Crisp Street Labels)
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 16
     }).addTo(state.leafletMap);
 
-    // Zoom Controls at Top Left
-    L.control.zoom({ position: 'topleft' }).addTo(state.leafletMap);
-
-    // Basecamp Pulse Marker (75 Nicholas St)
+    // Jail Basecamp Marker
     const jailIcon = L.divIcon({
       className: 'jail-marker-wrapper',
       html: `
-        <div style="position: relative; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;">
-          <div style="position: absolute; inset: 0; border-radius: 50%; background: rgba(245, 158, 11, 0.4); animation: pulse 2s infinite;"></div>
-          <div style="width: 24px; height: 24px; border-radius: 50%; background: #f59e0b; border: 2px solid #ffffff; display: flex; align-items: center; justify-content: center; font-size: 12px; box-shadow: 0 0 14px #f59e0b;">
-            🏰
-          </div>
+        <div style="background: #f59e0b; border: 2px solid #ffffff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; box-shadow: 0 0 14px #f59e0b;">
+          🏰
         </div>
       `,
-      iconSize: [34, 34],
-      iconAnchor: [17, 17]
+      iconSize: [28, 28],
+      iconAnchor: [14, 14]
     });
 
     const jailMarker = L.marker(basecampCoords, { icon: jailIcon }).addTo(state.leafletMap);
     jailMarker.bindPopup(`
       <div style="padding: 4px; font-family: var(--font-sans);">
         <h4 style="color: #f59e0b; font-size: 0.95rem; margin-bottom: 2px;">🏰 SAINTLO JAIL BASECAMP</h4>
-        <p style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 4px;">75 Nicholas St • 1862 Carleton County Gaol</p>
-        <div style="font-size: 0.72rem; color: #06b6d4;">24/7 Reception: +1 (613) 235-2595</div>
+        <p style="font-size: 0.78rem; color: #cbd5e1;">75 Nicholas St • 1862 Carleton County Gaol</p>
+        <div style="font-size: 0.72rem; color: #06b6d4;">24/7 Desk: +1 (613) 235-2595</div>
       </div>
     `);
 
-    // Load persisted user drawings & custom pins
     loadSavedSpatialDrawings();
     loadSavedCustomPins();
   }
 
-  // 3. LIFEBRAIN SYNC: Update HUD whenever state mutates
-  function initLifeBrainSync() {
-    if (!window.LifeBrain) return;
+  // 2. STREAMLINED NAVIGATION (MOBILE DOCK + DESKTOP TABS)
+  function initMobileNavigation() {
+    const dockBtns = document.querySelectorAll('.dock-nav-btn');
+    const desktopTabs = document.querySelectorAll('.deck-tab');
+    const dragHandle = document.getElementById('sheetDragHandle');
+    const sheet = document.getElementById('telemetrySheet');
 
-    // Subscribe to state changes
-    window.LifeBrain.subscribe((brainState) => {
-      renderHeaderStats(brainState);
-      renderNextBestAction(brainState);
-      renderHousingPipeline(brainState);
-      renderRunwayStats(brainState);
-      renderExpensesFeed(brainState);
+    // Mobile Dock Clicks
+    dockBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.getAttribute('data-mobile-tab');
+        setMobileTab(tab);
+      });
     });
 
-    // Initial render
-    renderHeaderStats(window.LifeBrain.state);
-    renderNextBestAction(window.LifeBrain.state);
-  }
+    // Desktop Tab Clicks
+    desktopTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const deck = tab.getAttribute('data-deck');
+        activateDeckPanel(deck);
+      });
+    });
 
-  function renderHeaderStats(brainState) {
-    const liquidEl = document.getElementById('headerLiquidVal');
-    const deckLiquidEl = document.getElementById('deckLiquidVal');
-    const clinicEl = document.getElementById('headerClinicVal');
-
-    const formattedLiquid = `$${brainState.finances.liquidDebit.toFixed(2)}`;
-    if (liquidEl) liquidEl.textContent = formattedLiquid;
-    if (deckLiquidEl) deckLiquidEl.textContent = formattedLiquid;
-    if (clinicEl) clinicEl.textContent = "Thu 11:50 AM";
-  }
-
-  function renderNextBestAction(brainState) {
-    const nextAction = window.LifeBrain.getNextBestAction();
-    const tagEl = document.getElementById('nextActionTag');
-    const titleEl = document.getElementById('nextActionTitle');
-    const descEl = document.getElementById('nextActionDesc');
-    const scriptEl = document.getElementById('nextActionScriptText');
-
-    if (tagEl) {
-      tagEl.textContent = nextAction.tag;
-      tagEl.style.borderColor = nextAction.urgencyColor;
-      tagEl.style.color = nextAction.urgencyColor;
+    // Sheet Drag Zone Toggle
+    if (dragHandle && sheet) {
+      dragHandle.addEventListener('click', () => {
+        sheet.classList.toggle('sheet-minimized');
+        if (sheet.classList.contains('sheet-minimized')) {
+          setDockActive('map');
+        }
+      });
     }
-    if (titleEl) titleEl.textContent = nextAction.title;
-    if (descEl) descEl.textContent = nextAction.actionText;
-    if (scriptEl) scriptEl.textContent = `"${nextAction.script}"`;
   }
 
-  // 4. OMNI-INPUT STREAM CONTROLLER ("DO EVERYTHING" BAR)
-  function initOmniStream() {
+  function setMobileTab(tabName) {
+    state.activeTab = tabName;
+    const sheet = document.getElementById('telemetrySheet');
+
+    setDockActive(tabName);
+
+    if (tabName === 'map') {
+      if (sheet) sheet.classList.add('sheet-minimized');
+      if (state.leafletMap) state.leafletMap.invalidateSize();
+    } else {
+      if (sheet) sheet.classList.remove('sheet-minimized');
+      activateDeckPanel(tabName);
+    }
+  }
+
+  function setDockActive(tabName) {
+    document.querySelectorAll('.dock-nav-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-mobile-tab') === tabName);
+    });
+  }
+
+  function activateDeckPanel(deckName) {
+    // Map tab maps to action panel
+    const panelKey = deckName === 'map' ? 'Action' : (deckName.charAt(0).toUpperCase() + deckName.slice(1));
+    
+    document.querySelectorAll('.deck-tab').forEach(t => {
+      t.classList.toggle('active', t.getAttribute('data-deck') === deckName);
+    });
+
+    document.querySelectorAll('.deck-panel').forEach(p => {
+      p.classList.toggle('active', p.id === `deckPanel${panelKey}`);
+    });
+  }
+
+  // 3. OMNI-STREAM SLIDE-DOWN DRAWER
+  function initOmniDrawer() {
+    const drawer = document.getElementById('omniDrawer');
+    const openBtn = document.getElementById('openOmniModalBtn');
+    const closeBtn = document.getElementById('closeOmniDrawerBtn');
     const input = document.getElementById('omniInputField');
     const submitBtn = document.getElementById('omniSubmitBtn');
-    const quickChips = document.querySelectorAll('.quick-tag-chip');
+    const tags = document.querySelectorAll('.omni-tag');
 
-    const handleStreamSubmit = () => {
-      const text = input.value.trim();
+    const openDrawer = () => {
+      if (drawer) drawer.classList.add('open');
+      if (input) {
+        input.focus();
+        input.value = '';
+      }
+    };
+
+    const closeDrawer = () => {
+      if (drawer) drawer.classList.remove('open');
+    };
+
+    if (openBtn) openBtn.addEventListener('click', openDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+
+    const handleOmniSubmit = () => {
+      const text = input?.value.trim();
       if (!text) return;
 
       const result = window.LifeBrain.parseOmniInput(text);
       if (result && result.message) {
         showToast(result.message);
-        input.value = '';
+        closeDrawer();
 
-        // If a new pin or housing lead was created, animate map to it
         if (result.type === 'housing' && result.lead) {
           addHousingMarkerToMap(result.lead);
           state.leafletMap.flyTo(result.lead.coords, 16);
+          setMobileTab('housing');
         } else if (result.type === 'custom_pin' && result.pin) {
           addCustomPinToMap(result.pin);
           state.leafletMap.flyTo(result.pin.coords, 16);
+          setMobileTab('map');
         }
       }
     };
 
-    if (submitBtn) submitBtn.addEventListener('click', handleStreamSubmit);
+    if (submitBtn) submitBtn.addEventListener('click', handleOmniSubmit);
     if (input) {
       input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') handleStreamSubmit();
+        if (e.key === 'Enter') handleOmniSubmit();
       });
     }
 
-    // Quick Action Chips Click
-    quickChips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        const prefix = chip.getAttribute('data-prefix');
+    tags.forEach(t => {
+      t.addEventListener('click', () => {
+        const prefix = t.getAttribute('data-prefix');
         if (input) {
           input.value = prefix;
           input.focus();
         }
       });
     });
-
-    // Copy Next Best Action Script
-    const copyScriptBtn = document.getElementById('copyNextActionScriptBtn');
-    if (copyScriptBtn) {
-      copyScriptBtn.addEventListener('click', () => {
-        const scriptText = document.getElementById('nextActionScriptText')?.textContent?.replace(/^"|"$/g, '');
-        if (scriptText) {
-          navigator.clipboard.writeText(scriptText);
-          showToast("📋 Script copied to clipboard!");
-        }
-      });
-    }
   }
 
-  // 5. MAP FREEHAND DRAWING & SPATIAL ANNOTATION SUITE
+  // 4. MAP DRAWING SUITE
   function initMapDrawingEngine() {
     const penBtn = document.getElementById('drawPenBtn');
     const circleBtn = document.getElementById('drawCircleBtn');
     const pinBtn = document.getElementById('dropPinBtn');
     const clearBtn = document.getElementById('clearDrawingsBtn');
-    const colorDots = document.querySelectorAll('.color-dot');
+    const colorDots = document.querySelectorAll('.tool-color');
     const mapEl = document.getElementById('map-container');
 
-    // Tool Toggles
     const setDrawingTool = (tool) => {
       if (state.drawingMode === tool) {
         state.drawingMode = null;
@@ -270,7 +271,6 @@
     if (circleBtn) circleBtn.addEventListener('click', () => setDrawingTool('circle'));
     if (pinBtn) pinBtn.addEventListener('click', () => setDrawingTool('pin'));
 
-    // Color Selector
     colorDots.forEach(dot => {
       dot.addEventListener('click', () => {
         colorDots.forEach(d => d.classList.remove('active'));
@@ -279,7 +279,6 @@
       });
     });
 
-    // Clear Drawings
     if (clearBtn) {
       clearBtn.addEventListener('click', () => {
         state.drawnLayers.forEach(layer => {
@@ -291,10 +290,8 @@
       });
     }
 
-    // Leaflet Mouse / Touch Handlers for Freehand Drawing
     state.leafletMap.on('mousedown touchstart', (e) => {
       if (!state.drawingMode) return;
-
       const latlng = e.latlng;
       if (!latlng) return;
 
@@ -309,18 +306,17 @@
         }).addTo(state.leafletMap);
       } else if (state.drawingMode === 'circle') {
         const circle = L.circle(latlng, {
-          radius: 120,
+          radius: 130,
           color: state.activeDrawColor,
           fillColor: state.activeDrawColor,
           fillOpacity: 0.15,
           weight: 2
         }).addTo(state.leafletMap);
-
         state.drawnLayers.push(circle);
         saveCurrentDrawings();
         showToast("⭕ Circled search zone added!");
       } else if (state.drawingMode === 'pin') {
-        const label = prompt("Enter label for this custom map marker:", "Search Spot");
+        const label = prompt("Enter label for this map pin:", "Search Spot");
         if (label) {
           const customPin = {
             id: 'pin-' + Date.now(),
@@ -374,7 +370,6 @@
       }
       return null;
     }).filter(Boolean);
-
     window.LifeBrain.saveDrawings(serialized);
   }
 
@@ -391,7 +386,7 @@
         state.drawnLayers.push(poly);
       } else if (d.type === 'circle') {
         const circle = L.circle(d.latlng, {
-          radius: d.radius || 120,
+          radius: d.radius || 130,
           color: d.color || '#06b6d4',
           fillColor: d.color || '#06b6d4',
           fillOpacity: 0.15,
@@ -423,93 +418,61 @@
     marker.bindPopup(`
       <div style="padding: 4px; font-family: var(--font-sans);">
         <h4 style="color: #3b82f6; font-size: 0.9rem; margin-bottom: 2px;">📍 ${pin.label}</h4>
-        <p style="font-size: 0.76rem; color: #94a3b8;">Custom user marked landmark</p>
+        <p style="font-size: 0.76rem; color: #94a3b8;">Custom landmark</p>
       </div>
     `);
     state.customPinMarkers.push(marker);
   }
 
-  // 6. DECK NAVIGATION TABS & MOBILE BOTTOM SHEET CONTROLLER
-  function initDeckNavigation() {
-    const deckTabs = document.querySelectorAll('.deck-tab');
-    const deckPanels = document.querySelectorAll('.deck-panel');
-    const sidebar = document.getElementById('cockpitSidebar');
-    const dragHandle = document.getElementById('sheetDragHandle');
-    const mobileNavBtns = document.querySelectorAll('.mobile-nav-btn');
+  // 5. LIFEBRAIN SYNC
+  function initLifeBrainSync() {
+    if (!window.LifeBrain) return;
 
-    // Desktop & Tablet Tab Switching
-    deckTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const deckName = tab.getAttribute('data-deck');
-        activateDeck(deckName);
-      });
+    window.LifeBrain.subscribe((brainState) => {
+      renderHeaderStats(brainState);
+      renderNextBestAction(brainState);
+      renderHousingPipeline(brainState);
+      renderExpensesFeed(brainState);
     });
 
-    function activateDeck(deckName) {
-      state.activeDeck = deckName;
-
-      deckTabs.forEach(t => t.classList.toggle('active', t.getAttribute('data-deck') === deckName));
-      deckPanels.forEach(p => {
-        const isTarget = p.id === `deckPanel${deckName.charAt(0).toUpperCase() + deckName.slice(1)}`;
-        p.classList.toggle('active', isTarget);
-      });
-
-      // On mobile, expand the sheet when a tab is chosen
-      if (sidebar) {
-        sidebar.classList.remove('sheet-hidden', 'sheet-collapsed');
-      }
-
-      // Sync mobile bottom bar active state
-      mobileNavBtns.forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-mobile-deck') === deckName);
-      });
-    }
-
-    // Toggle Mobile Drag Handle (Expand / Collapse)
-    if (dragHandle && sidebar) {
-      dragHandle.addEventListener('click', () => {
-        sidebar.classList.toggle('sheet-collapsed');
-      });
-    }
-
-    // Mobile View Bar Click Handlers
-    mobileNavBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const action = btn.getAttribute('data-action');
-        const mobileDeck = btn.getAttribute('data-mobile-deck');
-
-        mobileNavBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        if (action === 'toggle-map') {
-          // Toggle Sheet Visibility: When in Map mode, hide sheet to show 100% full map
-          if (sidebar) {
-            if (sidebar.classList.contains('sheet-hidden')) {
-              sidebar.classList.remove('sheet-hidden', 'sheet-collapsed');
-            } else {
-              sidebar.classList.add('sheet-hidden');
-            }
-          }
-          if (state.leafletMap) state.leafletMap.invalidateSize();
-        } else if (mobileDeck) {
-          activateDeck(mobileDeck);
-        }
-      });
-    });
+    renderHeaderStats(window.LifeBrain.state);
+    renderNextBestAction(window.LifeBrain.state);
+    renderHousingPipeline(window.LifeBrain.state);
+    renderExpensesFeed(window.LifeBrain.state);
+    renderNutritionProtocol();
   }
 
-  // 7. MANUAL NOTEPAD & AUTO-SAVE
+  function renderHeaderStats(brainState) {
+    const headerLiquid = document.getElementById('headerLiquidVal');
+    const deckLiquid = document.getElementById('deckLiquidVal');
+    const formatted = `$${brainState.finances.liquidDebit.toFixed(0)}`;
+    if (headerLiquid) headerLiquid.textContent = formatted;
+    if (deckLiquid) deckLiquid.textContent = `$${brainState.finances.liquidDebit.toFixed(2)}`;
+  }
+
+  function renderNextBestAction(brainState) {
+    const nextAction = window.LifeBrain.getNextBestAction();
+    const tag = document.getElementById('nextActionTag');
+    const title = document.getElementById('nextActionTitle');
+    const desc = document.getElementById('nextActionDesc');
+    const script = document.getElementById('nextActionScriptText');
+
+    if (tag) tag.textContent = nextAction.tag;
+    if (title) title.textContent = nextAction.title;
+    if (desc) desc.textContent = nextAction.actionText;
+    if (script) script.textContent = `"${nextAction.script}"`;
+  }
+
+  // 6. MANUAL NOTEPAD
   function initManualNotepad() {
     const textarea = document.getElementById('manualNotepadTextarea');
     const saveBadge = document.getElementById('notepadSaveBadge');
     const copyBtn = document.getElementById('copyNotepadBtn');
     const clearBtn = document.getElementById('clearNotepadBtn');
-    const insertBtns = document.querySelectorAll('.notepad-insert-btn');
+    const chips = document.querySelectorAll('.template-chip');
 
     if (textarea && window.LifeBrain) {
       textarea.value = window.LifeBrain.state.notepad.content || '';
-
-      // Debounced Auto-Save
       let timeout = null;
       textarea.addEventListener('input', () => {
         if (saveBadge) saveBadge.textContent = "⏳ Saving...";
@@ -517,20 +480,20 @@
         timeout = setTimeout(() => {
           window.LifeBrain.saveNotepad(textarea.value);
           if (saveBadge) saveBadge.textContent = "🟢 Auto-saved";
-        }, 600);
+        }, 500);
       });
     }
 
     if (copyBtn && textarea) {
       copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(textarea.value);
-        showToast("📋 Notepad copied to clipboard!");
+        showToast("📋 Notes copied!");
       });
     }
 
     if (clearBtn && textarea) {
       clearBtn.addEventListener('click', () => {
-        if (confirm("Clear all scratchpad notes?")) {
+        if (confirm("Clear scratchpad?")) {
           textarea.value = '';
           window.LifeBrain.saveNotepad('');
           showToast("🧹 Notepad cleared.");
@@ -538,11 +501,11 @@
       });
     }
 
-    insertBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const template = btn.getAttribute('data-template');
-        if (textarea && template) {
-          textarea.value += '\n' + template.replace(/\\n/g, '\n');
+    chips.forEach(c => {
+      c.addEventListener('click', () => {
+        const tmpl = c.getAttribute('data-template');
+        if (textarea && tmpl) {
+          textarea.value += '\n' + tmpl.replace(/\\n/g, '\n');
           window.LifeBrain.saveNotepad(textarea.value);
           showToast("📝 Template inserted!");
         }
@@ -550,18 +513,16 @@
     });
   }
 
-  // 8. HOUSING PIPELINE CONTROLLER
+  // 7. HOUSING PIPELINE
   function initHousingPipeline() {
-    renderHousingPipeline(window.LifeBrain.state);
-
     const addBtn = document.getElementById('openAddRoomModalBtn');
     if (addBtn) {
       addBtn.addEventListener('click', () => {
-        const title = prompt("Enter listing title / street name (e.g. 'Room on Chapel St'):", "Room on Nelson St");
+        const title = prompt("Listing title (e.g. 'Room on Chapel St'):", "Room on Nelson St");
         if (!title) return;
         const price = parseFloat(prompt("Monthly Rent ($ CAD):", "850")) || 850;
         const address = prompt("Address / Area:", "Sandy Hill, Ottawa");
-        const notes = prompt("Landlord notes / patio info:", "Outdoor patio, all-inclusive");
+        const notes = prompt("Notes:", "All-inclusive, outdoor smoking on patio");
 
         const coords = window.LifeBrain.inferStreetCoords(title + ' ' + address);
         const newLead = {
@@ -578,7 +539,7 @@
 
         window.LifeBrain.addHousingLead(newLead);
         addHousingMarkerToMap(newLead);
-        showToast(`🏠 Housing lead "${title}" added!`);
+        showToast(`🏠 Housing lead added!`);
       });
     }
   }
@@ -589,7 +550,7 @@
 
     const leads = brainState.housingPipeline || [];
     list.innerHTML = leads.map(lead => `
-      <div class="housing-card" id="card-${lead.id}">
+      <div class="housing-card">
         <div class="housing-card-top">
           <div>
             <div class="housing-card-title">${lead.title}</div>
@@ -605,19 +566,16 @@
             <option value="Top Choice" ${lead.status === 'Top Choice' ? 'selected' : ''}>⭐ Top Choice</option>
             <option value="Lease Signed" ${lead.status === 'Lease Signed' ? 'selected' : ''}>✅ Lease Signed</option>
           </select>
-          <button class="action-btn primary" onclick="window.zoomToHousingLead('${lead.id}')">
-            📍 View Map
-          </button>
+          <button class="btn-compact primary" onclick="window.zoomToHousingLead('${lead.id}')">📍 Map</button>
         </div>
       </div>
     `).join('');
 
-    // Bind Status Selectors
     list.querySelectorAll('.housing-status-select').forEach(select => {
       select.addEventListener('change', (e) => {
         const leadId = select.getAttribute('data-id');
         window.LifeBrain.updateLeadStatus(leadId, e.target.value);
-        showToast(`🏠 Status updated to "${e.target.value}"`);
+        showToast(`🏠 Status updated!`);
       });
     });
   }
@@ -625,6 +583,7 @@
   window.zoomToHousingLead = function (leadId) {
     const lead = window.LifeBrain.state.housingPipeline.find(h => h.id === leadId);
     if (lead && state.leafletMap) {
+      setMobileTab('map');
       state.leafletMap.flyTo(lead.coords, 16);
       showToast(`📍 Centered on ${lead.title}`);
     }
@@ -648,68 +607,8 @@
         <h4 style="color: #10b981; font-size: 0.95rem; margin-bottom: 2px;">🏠 ${lead.title}</h4>
         <p style="font-size: 0.8rem; color: #cbd5e1;">$${lead.price}/month • ${lead.address}</p>
         <p style="font-size: 0.74rem; color: #94a3b8; margin: 4px 0;">${lead.notes}</p>
-        <div style="font-size: 0.72rem; color: #06b6d4;">Status: ${lead.status}</div>
       </div>
     `);
-  }
-
-  // 9. FINANCIAL RUNWAY & CASH FLOW ENGINE
-  function initRunwayDeck() {
-    renderRunwayStats(window.LifeBrain.state);
-    renderExpensesFeed(window.LifeBrain.state);
-
-    const rentInput = document.getElementById('deckRentInput');
-    const incomeInput = document.getElementById('deckIncomeInput');
-    const aiHoursInput = document.getElementById('deckAiHoursInput');
-
-    [rentInput, incomeInput, aiHoursInput].forEach(inp => {
-      if (inp) inp.addEventListener('input', () => renderRunwayStats(window.LifeBrain.state));
-    });
-  }
-
-  function renderRunwayStats(brainState) {
-    const rentVal = parseFloat(document.getElementById('deckRentInput')?.value) || 800;
-    const baseIncome = parseFloat(document.getElementById('deckIncomeInput')?.value) || 1300;
-    const aiHours = parseFloat(document.getElementById('deckAiHoursInput')?.value) || 10;
-    
-    // Remote AI Task Income ($34 CAD/hr)
-    const aiMonthlyIncome = aiHours * 34 * 4.33;
-    const totalIncome = baseIncome + aiMonthlyIncome;
-
-    // Monthly Burn: Rent + $250 Groceries + $65 Transit + $50 Phone + $90 Misc
-    const baselineBurn = rentVal + 250 + 65 + 50 + 90;
-    const netCashFlow = totalIncome - baselineBurn;
-
-    const breakdownEl = document.getElementById('deckCashFlowBreakdown');
-    const statusEl = document.getElementById('deckRunwayStatus');
-
-    if (statusEl) {
-      if (netCashFlow >= 0) {
-        statusEl.textContent = `🟢 Surplus (+$${Math.round(netCashFlow)}/mo)`;
-        statusEl.className = 'runway-val-big text-emerald';
-      } else {
-        statusEl.textContent = `🔴 Deficit (-$${Math.round(Math.abs(netCashFlow))}/mo)`;
-        statusEl.className = 'runway-val-big text-rose';
-      }
-    }
-
-    if (breakdownEl) {
-      breakdownEl.innerHTML = `
-        <div style="display: flex; justify-content: space-between;">
-          <span>• Guaranteed Base:</span> <span class="text-cyan">+$${baseIncome.toFixed(0)}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>• AI Task Inflow (${aiHours}h/wk):</span> <span class="text-emerald">+$${aiMonthlyIncome.toFixed(0)}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between;">
-          <span>• Total Living Expenses:</span> <span class="text-rose">-$${baselineBurn.toFixed(0)}</span>
-        </div>
-        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 4px; margin-top: 4px; display: flex; justify-content: space-between; font-weight: 800;">
-          <span>NET MONTHLY FLOW:</span> 
-          <span class="${netCashFlow >= 0 ? 'text-emerald' : 'text-rose'}">${netCashFlow >= 0 ? '+' : '-'}$${Math.abs(Math.round(netCashFlow))}/mo</span>
-        </div>
-      `;
-    }
   }
 
   function renderExpensesFeed(brainState) {
@@ -718,7 +617,7 @@
 
     const expenses = brainState.finances.expenses || [];
     if (expenses.length === 0) {
-      list.innerHTML = '<div style="font-size: 0.76rem; color: var(--text-dim);">No expenses logged yet.</div>';
+      list.innerHTML = '<div style="font-size: 0.74rem; color: var(--text-dim);">No expenses logged yet.</div>';
       return;
     }
 
@@ -730,11 +629,8 @@
     `).join('');
   }
 
-  // 10. CHRONO-NUTRITION & TOE HEALTH CARE
-  function initChronoNutritionDeck() {
+  function renderNutritionProtocol() {
     const list = document.getElementById('nutritionWindowsList');
-    const zoomClinicBtn = document.getElementById('zoomClinicMapBtn');
-
     if (list && window.OTTAWA_DATA && window.OTTAWA_DATA.nutritionProtocol) {
       list.innerHTML = window.OTTAWA_DATA.nutritionProtocol.map(w => `
         <div class="nutrition-window-card">
@@ -742,28 +638,114 @@
             <span class="nutr-window-title">${w.windowName}</span>
             <span class="nutr-window-time">${w.time}</span>
           </div>
-          <div style="font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono);">${w.macros}</div>
           <div class="nutr-window-food">${w.recommendedFoods}</div>
           <div class="nutr-window-science">💡 ${w.scienceReasoning}</div>
         </div>
       `).join('');
     }
-
-    if (zoomClinicBtn && state.leafletMap) {
-      zoomClinicBtn.addEventListener('click', () => {
-        state.leafletMap.flyTo([45.4268, -75.6902], 17);
-        showToast("🏥 Centered on Downtown Urgent Care (158 Rideau St)");
-      });
-    }
   }
 
-  // 11. DIRECTIONAL GPS & HARDWARE COMPASS ENGINE
+  // 8. 7-DAY SCHEDULE & WAYPOINTS
+  function renderActiveDay(dayNum) {
+    state.currentDay = dayNum;
+    if (!window.OTTAWA_DATA) return;
+
+    const dayData = window.OTTAWA_DATA.sevenDayPlan.find(d => d.dayNum === dayNum) || window.OTTAWA_DATA.sevenDayPlan[0];
+
+    document.querySelectorAll('.day-pill').forEach(btn => {
+      btn.classList.toggle('active', parseInt(btn.getAttribute('data-day')) === dayNum);
+    });
+
+    renderScheduleFeed(dayData);
+    renderMapPathAndMarkers(dayData);
+  }
+
+  function renderScheduleFeed(dayData) {
+    const list = document.getElementById('intelFeedList');
+    if (!list) return;
+
+    list.innerHTML = dayData.schedule.map((item, idx) => `
+      <div class="feed-item-card" onclick="window.zoomToWaypoint(${idx})">
+        <div class="feed-item-header">
+          <span class="feed-item-title">${idx + 1}. ${item.phase}</span>
+          <span class="feed-item-badge" style="background: ${item.badgeColor}22; color: ${item.badgeColor}; border: 1px solid ${item.badgeColor};">
+            ${item.time}
+          </span>
+        </div>
+        <div class="feed-item-desc">${item.mission}</div>
+        <div style="font-size: 0.72rem; color: var(--cyan); font-family: var(--font-mono);">
+          📍 ${item.locationName}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderMapPathAndMarkers(dayData) {
+    if (!state.leafletMap) return;
+
+    Object.values(state.markersMap).forEach(m => {
+      if (state.leafletMap.hasLayer(m)) m.remove();
+    });
+    state.markersMap = {};
+
+    if (state.routePolyline && state.leafletMap.hasLayer(state.routePolyline)) {
+      state.routePolyline.remove();
+      state.routeGlowPolyline.remove();
+    }
+
+    if (dayData.pathCoords && dayData.pathCoords.length > 1) {
+      state.routeGlowPolyline = L.polyline(dayData.pathCoords, {
+        color: '#06b6d4',
+        weight: 6,
+        opacity: 0.35
+      }).addTo(state.leafletMap);
+
+      state.routePolyline = L.polyline(dayData.pathCoords, {
+        color: '#22d3ee',
+        weight: 3,
+        dashArray: '8, 8',
+        opacity: 0.95
+      }).addTo(state.leafletMap);
+    }
+
+    dayData.schedule.forEach((item, index) => {
+      const markerIcon = L.divIcon({
+        className: 'numbered-marker-wrapper',
+        html: `<div class="waypoint-num-marker">${index + 1}</div>`,
+        iconSize: [26, 26],
+        iconAnchor: [13, 13]
+      });
+
+      const marker = L.marker(item.coords, { icon: markerIcon }).addTo(state.leafletMap);
+      marker.bindPopup(`
+        <div style="padding: 4px; font-family: var(--font-sans);">
+          <h4 style="color: #06b6d4; font-size: 0.95rem; margin-bottom: 2px;">${index + 1}. ${item.phase}</h4>
+          <p style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 4px;">${item.time} • ${item.locationName}</p>
+          <p style="font-size: 0.76rem; color: #94a3b8;">${item.mission}</p>
+        </div>
+      `);
+      state.markersMap[item.id] = marker;
+    });
+  }
+
+  window.zoomToWaypoint = function (index) {
+    const dayData = window.OTTAWA_DATA.sevenDayPlan.find(d => d.dayNum === state.currentDay);
+    if (dayData && dayData.schedule[index] && state.leafletMap) {
+      const item = dayData.schedule[index];
+      setMobileTab('map');
+      state.leafletMap.flyTo(item.coords, 17);
+      if (state.markersMap[item.id]) {
+        state.markersMap[item.id].openPopup();
+      }
+    }
+  };
+
+  // 9. DIRECTIONAL GPS COMPASS
   function initDirectionalGps() {
     const gpsBtn = document.getElementById('gpsLocateBtn');
     if (!gpsBtn) return;
 
     gpsBtn.addEventListener('click', () => {
-      // Request Device Orientation on iOS Safari
       if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
         DeviceOrientationEvent.requestPermission()
           .then(permissionState => {
@@ -804,7 +786,7 @@
 
   function startGpsWatch() {
     if (!navigator.geolocation) {
-      alert("Geolocation is not supported on this browser.");
+      alert("Geolocation is not supported.");
       return;
     }
 
@@ -829,14 +811,6 @@
     const accuracy = position.coords.accuracy;
 
     state.userCoords = [lat, lng];
-
-    if (state.lastPosition) {
-      const distDelta = calculateDistance(state.lastPosition[0], state.lastPosition[1], lat, lng);
-      if (distDelta > 3 && distDelta < 300) {
-        state.totalDistanceWalkedMeters += distDelta;
-      }
-    }
-    state.lastPosition = [lat, lng];
 
     if (position.coords.heading !== null && !isNaN(position.coords.heading) && position.coords.heading > 0) {
       state.userHeading = Math.round(position.coords.heading);
@@ -879,189 +853,15 @@
     if (centerMap) {
       state.leafletMap.flyTo([lat, lng], 16, { duration: 1.0 });
     }
-
-    // Run SpatialOptimizerEngine
-    SpatialOptimizerEngine.evaluate(lat, lng);
   }
 
-  // 12. SPATIAL OPTIMIZER & GUIDANCE ENGINE
-  const SpatialOptimizerEngine = {
-    evaluate(userLat, userLng) {
-      const banner = document.getElementById('sidebarCopilotBanner');
-      if (!banner || !window.OTTAWA_DATA) return;
-
-      const dayData = window.OTTAWA_DATA.sevenDayPlan.find(d => d.dayNum === state.currentDay) || window.OTTAWA_DATA.sevenDayPlan[0];
-      const items = dayData.schedule;
-
-      const scored = items.map(item => {
-        const dist = calculateDistance(userLat, userLng, item.coords[0], item.coords[1]);
-        const walkMins = Math.max(1, Math.round(dist / 80));
-        return { ...item, dist, walkMins };
-      });
-
-      scored.sort((a, b) => a.dist - b.dist);
-      const nearest = scored[0];
-      const isArrived = nearest.dist <= 45;
-
-      const hour = new Date().getHours();
-      let wellnessText = "💧 Stay hydrated: Drink 500ml water to support healing.";
-      if (hour >= 13 && hour <= 15) {
-        wellnessText = "🥗 Window 1 Fuel: 3 eggs + oatmeal/Greek yogurt + 500ml water for dopamine.";
-      } else if (hour >= 16 && hour <= 18) {
-        wellnessText = "🥗 Window 2 Focus: Raw almonds + dark chocolate + green tea.";
-      } else if (hour >= 19 && hour <= 21) {
-        wellnessText = "🥗 Window 3 Dinner: 3 Brothers Shawarma plate (protein + garlic for toe healing).";
-      } else if (hour >= 22 || hour < 6) {
-        wellnessText = "🥗 Window 4 Decompression: Chamomile tea + peanut butter/pumpkin seeds.";
-      }
-
-      this.renderDynamicGuidanceLine(userLat, userLng, nearest.coords);
-
-      banner.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-          <span style="font-size: 0.72rem; color: var(--cyan); font-family: var(--font-mono); font-weight: 700;">
-            ${isArrived ? '📍 ARRIVED AT DESTINATION' : '🧭 ACTIVE TARGET'}
-          </span>
-          <span style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--amber); font-weight: 700;">
-            ${isArrived ? 'On-Site' : `${Math.round(nearest.dist)}m • ~${nearest.walkMins} min walk`}
-          </span>
-        </div>
-        <div style="font-size: 0.95rem; font-weight: 800; color: #fff;">${nearest.phase}</div>
-        <div style="font-size: 0.78rem; color: #cbd5e1; line-height: 1.35; margin: 4px 0;">${nearest.mission}</div>
-        <div style="font-size: 0.72rem; color: var(--text-dim); border-top: 1px solid rgba(255,255,255,0.06); padding-top: 4px; margin-top: 4px;">
-          ${wellnessText}
-        </div>
-      `;
-    },
-
-    renderDynamicGuidanceLine(userLat, userLng, targetCoords) {
-      if (!state.leafletMap) return;
-      if (state.dynamicUserRouteLine && state.leafletMap.hasLayer(state.dynamicUserRouteLine)) {
-        state.dynamicUserRouteLine.remove();
-      }
-
-      state.dynamicUserRouteLine = L.polyline([[userLat, userLng], targetCoords], {
-        color: '#06b6d4',
-        weight: 3,
-        dashArray: '4, 8',
-        opacity: 0.9
-      }).addTo(state.leafletMap);
-    }
-  };
-
-  // 13. RENDER ACTIVE DAY & WAYPOINTS
-  function renderActiveDay(dayNum) {
-    state.currentDay = dayNum;
-    if (!window.OTTAWA_DATA) return;
-
-    const dayData = window.OTTAWA_DATA.sevenDayPlan.find(d => d.dayNum === dayNum) || window.OTTAWA_DATA.sevenDayPlan[0];
-
-    // Update Day Tabs
-    document.querySelectorAll('.day-tab-btn').forEach(btn => {
-      btn.classList.toggle('active', parseInt(btn.getAttribute('data-day')) === dayNum);
-    });
-
-    renderScheduleFeed(dayData);
-    renderMapPathAndMarkers(dayData);
-    renderHorizontalTimeline(dayData);
-  }
-
-  function renderScheduleFeed(dayData) {
-    const list = document.getElementById('intelFeedList');
-    if (!list) return;
-
-    list.innerHTML = dayData.schedule.map((item, idx) => `
-      <div class="feed-item-card" onclick="window.zoomToWaypoint(${idx})">
-        <div class="feed-item-header">
-          <span class="feed-item-title">${idx + 1}. ${item.phase}</span>
-          <span class="feed-item-badge" style="background: ${item.badgeColor}22; color: ${item.badgeColor}; border: 1px solid ${item.badgeColor};">
-            ${item.time}
-          </span>
-        </div>
-        <div class="feed-item-desc">${item.mission}</div>
-        <div style="font-size: 0.72rem; color: var(--cyan); font-family: var(--font-mono);">
-          📍 ${item.locationName}
-        </div>
-      </div>
-    `).join('');
-  }
-
-  function renderMapPathAndMarkers(dayData) {
-    if (!state.leafletMap) return;
-
-    Object.values(state.markersMap).forEach(m => {
-      if (state.leafletMap.hasLayer(m)) m.remove();
-    });
-    state.markersMap = {};
-
-    if (state.routePolyline && state.leafletMap.hasLayer(state.routePolyline)) {
-      state.routePolyline.remove();
-      state.routeGlowPolyline.remove();
-    }
-
-    if (dayData.pathCoords && dayData.pathCoords.length > 1) {
-      state.routeGlowPolyline = L.polyline(dayData.pathCoords, {
-        color: '#06b6d4',
-        weight: 7,
-        opacity: 0.35
-      }).addTo(state.leafletMap);
-
-      state.routePolyline = L.polyline(dayData.pathCoords, {
-        color: '#22d3ee',
-        weight: 3,
-        dashArray: '8, 8',
-        opacity: 0.95
-      }).addTo(state.leafletMap);
-    }
-
-    dayData.schedule.forEach((item, index) => {
-      const markerIcon = L.divIcon({
-        className: 'numbered-marker-wrapper',
-        html: `<div class="waypoint-num-marker">${index + 1}</div>`,
-        iconSize: [26, 26],
-        iconAnchor: [13, 13]
-      });
-
-      const marker = L.marker(item.coords, { icon: markerIcon }).addTo(state.leafletMap);
-      marker.bindPopup(`
-        <div style="padding: 4px; font-family: var(--font-sans);">
-          <h4 style="color: #06b6d4; font-size: 0.95rem; margin-bottom: 2px;">${index + 1}. ${item.phase}</h4>
-          <p style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 4px;">${item.time} • ${item.locationName}</p>
-          <p style="font-size: 0.76rem; color: #94a3b8;">${item.mission}</p>
-        </div>
-      `);
-      state.markersMap[item.id] = marker;
-    });
-  }
-
-  function renderHorizontalTimeline(dayData) {
-    const track = document.getElementById('timelineScrollTrack');
-    if (!track) return;
-
-    track.innerHTML = dayData.schedule.map((item, idx) => `
-      <div class="timeline-node" onclick="window.zoomToWaypoint(${idx})">
-        <span style="font-weight: 700; color: var(--cyan);">${idx + 1}.</span>
-        <span>${item.time}</span>
-      </div>
-    `).join('');
-  }
-
-  window.zoomToWaypoint = function (index) {
-    const dayData = window.OTTAWA_DATA.sevenDayPlan.find(d => d.dayNum === state.currentDay);
-    if (dayData && dayData.schedule[index] && state.leafletMap) {
-      const item = dayData.schedule[index];
-      state.leafletMap.flyTo(item.coords, 17);
-      if (state.markersMap[item.id]) {
-        state.markersMap[item.id].openPopup();
-      }
-    }
-  };
-
-  // 14. MODALS & UTILITIES
+  // 10. MODALS & UTILITIES
   function initModals() {
     const loreModal = document.getElementById('loreModalOverlay');
-    const openLoreBtn = document.getElementById('mobileNavLore');
+    const openLoreBtn = document.getElementById('openLoreModalBtn');
     const closeLoreBtn = document.getElementById('closeLoreModalBtn');
+    const zoomClinicBtn = document.getElementById('zoomClinicBtn');
+    const copyScriptBtn = document.getElementById('copyNextActionScriptBtn');
 
     if (openLoreBtn && loreModal) openLoreBtn.addEventListener('click', () => loreModal.style.display = 'flex');
     if (closeLoreBtn && loreModal) closeLoreBtn.addEventListener('click', () => loreModal.style.display = 'none');
@@ -1071,8 +871,25 @@
       });
     }
 
-    // Day Tab Buttons
-    document.querySelectorAll('.day-tab-btn').forEach(btn => {
+    if (zoomClinicBtn && state.leafletMap) {
+      zoomClinicBtn.addEventListener('click', () => {
+        setMobileTab('map');
+        state.leafletMap.flyTo([45.4268, -75.6902], 17);
+        showToast("🏥 Centered on Downtown Urgent Care (158 Rideau St)");
+      });
+    }
+
+    if (copyScriptBtn) {
+      copyScriptBtn.addEventListener('click', () => {
+        const scriptText = document.getElementById('nextActionScriptText')?.textContent?.replace(/^"|"$/g, '');
+        if (scriptText) {
+          navigator.clipboard.writeText(scriptText);
+          showToast("📋 Script copied!");
+        }
+      });
+    }
+
+    document.querySelectorAll('.day-pill').forEach(btn => {
       btn.addEventListener('click', () => {
         const day = parseInt(btn.getAttribute('data-day'));
         renderActiveDay(day);
@@ -1080,7 +897,6 @@
     });
   }
 
-  // Toast Notification
   function showToast(msg) {
     let toast = document.getElementById('appToast');
     if (!toast) {
@@ -1088,19 +904,19 @@
       toast.id = 'appToast';
       toast.style.cssText = `
         position: fixed;
-        bottom: 24px;
+        bottom: calc(65px + env(safe-area-inset-bottom, 0px));
         left: 50%;
         transform: translateX(-50%);
         background: rgba(9, 12, 20, 0.95);
         border: 1px solid #06b6d4;
         color: #fff;
-        padding: 10px 18px;
+        padding: 8px 16px;
         border-radius: 9999px;
         font-family: var(--font-sans);
-        font-size: 0.84rem;
-        font-weight: 600;
+        font-size: 0.8rem;
+        font-weight: 700;
         z-index: 9999;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.85);
         pointer-events: none;
         transition: opacity 0.3s ease;
       `;
@@ -1111,22 +927,7 @@
     clearTimeout(toast._timeout);
     toast._timeout = setTimeout(() => {
       toast.style.opacity = '0';
-    }, 3200);
-  }
-
-  // Haversine Distance in Meters
-  function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371e3;
-    const φ1 = lat1 * Math.PI / 180;
-    const φ2 = lat2 * Math.PI / 180;
-    const Δφ = (lat2 - lat1) * Math.PI / 180;
-    const Δλ = (lon2 - lon1) * Math.PI / 180;
-
-    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-      Math.cos(φ1) * Math.cos(φ2) *
-      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+    }, 3000);
   }
 
 })();
