@@ -666,16 +666,16 @@ const OTTAWA_DATA = {
 
   // 6. COMPLETE 7-DAY OPERATIONAL SPRINT (WITH MAP FOOD WAYPOINTS FOR EVERY DAY)
   sevenDayPlan: [
-    // --- DAY 1 (WEDNESDAY NIGHT): NOCTURNAL SPRINT & LATE-NIGHT DINNER ---
+    // --- DAY 1 (WEDNESDAY NIGHT): NOCTURNAL FOCUS & RELAXATION ---
     {
       dayNum: 1,
       dayLabel: "Day 1 (Wed)",
-      theme: "Nocturnal Power Sprint & Late-Night Recovery Fuel",
-      keyMilestone: "High-protein Shawarma Dinner + Social @ The Loft + Overnight Landlord Outreach",
+      theme: "Nocturnal Focus, Shawarma Reload & Overnight Landlord Outreach",
+      keyMilestone: "High-protein Shawarma Dinner + Foot Rest / AI Tasking + Overnight Landlord Inbox Queue",
       pathCoords: [
         [45.4252, -75.6918], // Dollarama
         [45.4270, -75.6880], // 3 Brothers Shawarma (Dinner)
-        [45.4255, -75.6885], // The Loft (Late Night)
+        [45.4145, -75.6890], // Elgin Street Diner (Optional 24h Booth)
         [45.4251, -75.6892]  // Jail Basecamp
       ],
       schedule: [
@@ -702,12 +702,12 @@ const OTTAWA_DATA = {
         {
           id: "d1-3",
           time: "09:00 PM – 11:30 PM",
-          phase: "🎲 Social Unwind & Gaming @ The Loft",
-          locationName: "The Loft / Level One Pub (14 Waller St • 20m)",
-          coords: [45.4255, -75.6885],
-          mission: "Walk 20 steps behind hostel into The Loft ($9 cover). Play board games/video games, chat with friendly students/techies, grab a hot cider.",
-          badgeColor: "#f43f5e",
-          actionTag: "Social Fun"
+          phase: "☕ Chill Outpost: Elgin St Diner Booth OR Lounge Rest",
+          locationName: "ESD (374 Elgin St) or Hostel Lounge (75 Nicholas)",
+          coords: [45.4145, -75.6890],
+          mission: "Option A: Relax in the quiet hostel lounge with hot tea and elevate foot. Option B: Stroll/bus to Elgin Street Diner for a cozy 24/7 booth and bottomless coffee.",
+          badgeColor: "#8b5cf6",
+          actionTag: "Low-Key Rest"
         },
         {
           id: "d1-4",

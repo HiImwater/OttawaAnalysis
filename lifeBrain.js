@@ -323,11 +323,11 @@ class LifeBrainEngine {
 
     if (hour >= 20 || hour < 4) {
       return {
-        tag: '🌙 Nocturnal Grind & Social',
-        title: 'Socialize at The Loft or Deep AI Cash Grind',
-        actionText: 'The Loft (14 Waller) is open til 1 AM (20m away). Or grind 2 hrs on DataAnnotation ($20–$40/hr USD) from the quiet hostel lounge.',
-        btnLabel: 'Open The Loft / AI Tasks',
-        script: 'Hey! Mind if I jump in for the next round? I work in AI.',
+        tag: '🌙 Nocturnal Focus & Fuel',
+        title: 'Bunker Chill: Hot Shawarma & AI Tasking / Landlord Outreach',
+        actionText: 'Elevate your toe in the quiet hostel lounge or grab a 24/7 booth at Elgin Street Diner. Queue 10-15 room inquiries for Sandy Hill landlords.',
+        btnLabel: 'View 24/7 Map & Outposts',
+        script: 'Hi! I saw your room listing in Sandy Hill and have first/last rent ready immediately. Can I view it Thursday afternoon? - Jordan',
         urgencyColor: '#06b6d4'
       };
     } else if (hour >= 4 && hour < 10) {
