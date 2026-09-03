@@ -89,10 +89,11 @@
 
     window.leafletMap = state.leafletMap;
 
-    // Premium Dark Minimal CartoDB Tiles
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    // OpenStreetMap High-Precision Tiles with Dark CSS Filter (100% Free Forever, Zero API Key Glitches)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
-      subdomains: 'abcd'
+      className: 'dark-map-tiles',
+      attribution: '&copy; OpenStreetMap contributors'
     }).addTo(state.leafletMap);
 
     // Zoom Controls at Top Left

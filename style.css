@@ -958,6 +958,11 @@ body {
   z-index: 1;
 }
 
+/* Dark Mode Filter for OpenStreetMap Tiles (Zero API Key Glitches) */
+.dark-map-tiles {
+  filter: brightness(0.6) invert(1) contrast(2.4) hue-rotate(185deg) saturate(0.35) brightness(0.9);
+}
+
 /* MAP DRAWING TOOLBAR OVERLAY */
 .map-drawing-toolbar {
   position: absolute;
