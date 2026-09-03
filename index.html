@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
   <!-- Unified Cockpit Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=2.5.0">
+  <link rel="stylesheet" href="style.css?v=2.6.0">
 </head>
 <body>
 
@@ -87,6 +87,11 @@
     <!-- LEFT CONTROL DECK / SIDEBAR (Tabs & Live Modules) -->
     <aside class="cockpit-sidebar" id="cockpitSidebar">
       
+      <!-- Mobile Native Drag Handle -->
+      <div class="sheet-drag-handle" id="sheetDragHandle">
+        <div class="drag-pill"></div>
+      </div>
+
       <!-- Primary OS Navigation Tabs -->
       <div class="deck-tabs-bar">
         <button class="deck-tab active" data-deck="copilot"><span>⚡</span> Co-Pilot</button>
@@ -341,22 +346,26 @@
   </main>
 
   <!-- iOS Modern Floating Dock Bar (Phone Screens) -->
-  <nav class="mobile-view-bar">
-    <button class="mobile-nav-btn active" data-view="map">
+  <nav class="mobile-view-bar" id="mobileViewBar">
+    <button class="mobile-nav-btn active" data-action="toggle-map">
       <span>🗺️</span>
-      <span>Live Map</span>
+      <span>Map</span>
     </button>
-    <button class="mobile-nav-btn" data-view="deck">
+    <button class="mobile-nav-btn" data-mobile-deck="copilot">
       <span>⚡</span>
-      <span>Deck & OS</span>
+      <span>Co-Pilot</span>
     </button>
-    <button class="mobile-nav-btn" data-view="notes">
+    <button class="mobile-nav-btn" data-mobile-deck="housing">
+      <span>🏠</span>
+      <span>Housing</span>
+    </button>
+    <button class="mobile-nav-btn" data-mobile-deck="notepad">
       <span>📝</span>
-      <span>Notepad</span>
+      <span>Notes</span>
     </button>
-    <button class="mobile-nav-btn" id="mobileNavLore">
-      <span>🏰</span>
-      <span>Jail Lore</span>
+    <button class="mobile-nav-btn" data-mobile-deck="runway">
+      <span>💰</span>
+      <span>Runway</span>
     </button>
   </nav>
 
@@ -394,8 +403,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   
   <!-- Project Scripts with Cache Buster -->
-  <script src="data.js?v=2.5.0"></script>
-  <script src="lifeBrain.js?v=2.5.0"></script>
-  <script src="app.js?v=2.5.0"></script>
+  <script src="data.js?v=2.6.0"></script>
+  <script src="lifeBrain.js?v=2.6.0"></script>
+  <script src="app.js?v=2.6.0"></script>
 </body>
 </html>

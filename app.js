@@ -429,49 +429,70 @@
     state.customPinMarkers.push(marker);
   }
 
-  // 6. DECK NAVIGATION TABS (Co-Pilot, Notepad, Housing, Runway, Nutrition, Plan)
+  // 6. DECK NAVIGATION TABS & MOBILE BOTTOM SHEET CONTROLLER
   function initDeckNavigation() {
     const deckTabs = document.querySelectorAll('.deck-tab');
     const deckPanels = document.querySelectorAll('.deck-panel');
+    const sidebar = document.getElementById('cockpitSidebar');
+    const dragHandle = document.getElementById('sheetDragHandle');
+    const mobileNavBtns = document.querySelectorAll('.mobile-nav-btn');
 
+    // Desktop & Tablet Tab Switching
     deckTabs.forEach(tab => {
       tab.addEventListener('click', () => {
         const deckName = tab.getAttribute('data-deck');
-        state.activeDeck = deckName;
-
-        deckTabs.forEach(t => t.classList.remove('active'));
-        deckPanels.forEach(p => p.classList.remove('active'));
-
-        tab.classList.add('active');
-        const targetPanel = document.getElementById(`deckPanel${deckName.charAt(0).toUpperCase() + deckName.slice(1)}`);
-        if (targetPanel) targetPanel.classList.add('active');
+        activateDeck(deckName);
       });
     });
 
-    // Mobile View Bar Switcher
-    const mobileNavBtns = document.querySelectorAll('.mobile-nav-btn');
+    function activateDeck(deckName) {
+      state.activeDeck = deckName;
+
+      deckTabs.forEach(t => t.classList.toggle('active', t.getAttribute('data-deck') === deckName));
+      deckPanels.forEach(p => {
+        const isTarget = p.id === `deckPanel${deckName.charAt(0).toUpperCase() + deckName.slice(1)}`;
+        p.classList.toggle('active', isTarget);
+      });
+
+      // On mobile, expand the sheet when a tab is chosen
+      if (sidebar) {
+        sidebar.classList.remove('sheet-hidden', 'sheet-collapsed');
+      }
+
+      // Sync mobile bottom bar active state
+      mobileNavBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-mobile-deck') === deckName);
+      });
+    }
+
+    // Toggle Mobile Drag Handle (Expand / Collapse)
+    if (dragHandle && sidebar) {
+      dragHandle.addEventListener('click', () => {
+        sidebar.classList.toggle('sheet-collapsed');
+      });
+    }
+
+    // Mobile View Bar Click Handlers
     mobileNavBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        const view = btn.getAttribute('data-view');
-        if (!view) return;
+        const action = btn.getAttribute('data-action');
+        const mobileDeck = btn.getAttribute('data-mobile-deck');
+
         mobileNavBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
-        const sidebar = document.getElementById('cockpitSidebar');
-        const main = document.getElementById('cockpitMain');
-
-        if (view === 'map') {
-          if (sidebar) sidebar.style.display = 'none';
-          if (main) main.style.display = 'flex';
-          state.leafletMap.invalidateSize();
-        } else if (view === 'deck') {
-          if (sidebar) sidebar.style.display = 'flex';
-          if (main) main.style.display = 'none';
-        } else if (view === 'notes') {
-          if (sidebar) sidebar.style.display = 'flex';
-          if (main) main.style.display = 'none';
-          // Activate notepad tab
-          document.querySelector('.deck-tab[data-deck="notepad"]')?.click();
+        if (action === 'toggle-map') {
+          // Toggle Sheet Visibility: When in Map mode, hide sheet to show 100% full map
+          if (sidebar) {
+            if (sidebar.classList.contains('sheet-hidden')) {
+              sidebar.classList.remove('sheet-hidden', 'sheet-collapsed');
+            } else {
+              sidebar.classList.add('sheet-hidden');
+            }
+          }
+          if (state.leafletMap) state.leafletMap.invalidateSize();
+        } else if (mobileDeck) {
+          activateDeck(mobileDeck);
         }
       });
     });

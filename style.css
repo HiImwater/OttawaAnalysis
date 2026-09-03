@@ -1229,8 +1229,27 @@ body {
   cursor: pointer;
 }
 
+/* SHEET DRAG HANDLE FOR MOBILE */
+.sheet-drag-handle {
+  display: none;
+  width: 100%;
+  padding: 8px 0 6px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.drag-pill {
+  width: 40px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+}
+
 /* =========================================================
-   10. MOBILE VIEW BAR & RESPONSIVE LAYOUT
+   10. MOBILE VIEW BAR & NATIVE IPHONE COCKPIT
    ========================================================= */
 .mobile-view-bar {
   display: none;
@@ -1240,51 +1259,163 @@ body {
   right: 0;
   background: var(--bg-glass-heavy);
   border-top: 1px solid var(--border);
-  padding: 8px 16px calc(8px + var(--safe-bottom));
+  padding: 6px 12px calc(6px + var(--safe-bottom));
   justify-content: space-around;
-  z-index: 1100;
-  backdrop-filter: blur(20px);
+  z-index: 1200;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 
 .mobile-nav-btn {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+}
+
+.mobile-nav-btn span:first-child {
+  font-size: 1.15rem;
 }
 
 .mobile-nav-btn.active {
   color: var(--cyan);
+  background: rgba(6, 182, 212, 0.12);
 }
 
-/* RESPONSIVE BREAKPOINTS */
+/* =========================================================
+   RESPONSIVE IPHONE & MOBILE VIEWPORT (APPLE MAPS STYLE)
+   ========================================================= */
 @media (max-width: 860px) {
+  /* Full screen map takes entire height */
   .cockpit-container {
-    flex-direction: column;
-  }
-
-  .cockpit-sidebar {
+    position: relative;
     width: 100%;
-    max-width: none;
-    height: 48%;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
+    height: calc(100vh - 100px - var(--safe-top));
+    height: calc(100dvh - 100px - var(--safe-top));
+    overflow: hidden;
   }
 
   .cockpit-main {
-    height: 52%;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  /* Floating Bottom Sheet on Mobile */
+  .cockpit-sidebar {
+    position: absolute;
+    bottom: 58px;
+    left: 8px;
+    right: 8px;
+    width: auto;
+    max-width: none;
+    max-height: 72vh;
+    border-radius: 20px 20px 0 0;
+    background: rgba(11, 15, 25, 0.97);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    z-index: 1050;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Sheet State: Collapsed (Only shows top drag bar & tabs) */
+  .cockpit-sidebar.sheet-collapsed {
+    max-height: 52px;
+    overflow: hidden;
+  }
+
+  .cockpit-sidebar.sheet-collapsed .deck-panel {
+    display: none !important;
+  }
+
+  /* Sheet State: Fully Hidden (When 100% full map is requested) */
+  .cockpit-sidebar.sheet-hidden {
+    transform: translateY(120%);
+    pointer-events: none;
+  }
+
+  .sheet-drag-handle {
+    display: flex;
   }
 
   .mobile-view-bar {
     display: flex;
   }
 
+  /* Top Bar Slim Down */
+  .telemetry-bar {
+    padding: 6px 12px;
+  }
+
+  .brand-text p {
+    display: none;
+  }
+
   .header-live-stats {
     display: none;
+  }
+
+  /* Compact Omni-Stream Bar */
+  .omni-stream-section {
+    padding: 6px 12px;
+    gap: 4px;
+  }
+
+  .omni-input-wrapper {
+    padding: 3px 5px 3px 12px;
+  }
+
+  #omniInputField {
+    font-size: 0.8rem;
+  }
+
+  .omni-submit-btn {
+    padding: 5px 10px;
+    font-size: 0.72rem;
+  }
+
+  .omni-quick-chips {
+    display: none;
+  }
+
+  /* Floating Map Tools on Mobile */
+  .map-drawing-toolbar {
+    top: 8px;
+    right: 8px;
+    padding: 3px 6px;
+    gap: 4px;
+    scale: 0.92;
+    transform-origin: top right;
+  }
+
+  .draw-tool-btn .tool-text {
+    display: none;
+  }
+
+  .horizontal-timeline-bar {
+    display: none !important;
+  }
+
+  .floating-detail-drawer {
+    left: 8px;
+    right: 8px;
+    width: auto;
+    bottom: 64px;
+    top: auto;
+    max-height: 50vh;
   }
 }
