@@ -425,6 +425,44 @@ class LifeBrainEngine {
     this.saveState();
   }
 
+  // Official Scotiabank InfoAlerts Email & SMS Automated Parser
+  parseScotiabankInfoAlert(alertText) {
+    if (!alertText || typeof alertText !== 'string') return null;
+    const text = alertText.trim();
+
+    // Regex for Scotiabank withdrawal/purchase/e-transfer:
+    const amountMatch = text.match(/(?:withdrawal|purchase|transaction|e-transfer|debit|payment|charge)\s+(?:of\s+)?\$?\s?([0-9]+\.?[0-9]{0,2})/i) ||
+                        text.match(/\$([0-9]+\.?[0-9]{0,2})/);
+
+    let amount = 0;
+    if (amountMatch) {
+      amount = parseFloat(amountMatch[1]) || 0;
+    }
+
+    let vendor = 'Scotiabank Debit';
+    const vendorMatch = text.match(/(?:at|to)\s+([A-Za-z0-9\s#\.\-&']+?)\s+(?:on|\.|for|\(|$)/i);
+    if (vendorMatch && vendorMatch[1]) {
+      vendor = vendorMatch[1].trim();
+    } else {
+      const words = text.split(/\s+/);
+      const upperWords = words.filter(w => /^[A-Z0-9#\.\-&']{2,}$/.test(w) && !['SCOTIABANK', 'ALERT', 'INFOALERT', 'ACCOUNT', 'INTERAC', 'CAD', 'USD', 'THE', 'OF', 'ON'].includes(w));
+      if (upperWords.length > 0) {
+        vendor = upperWords.join(' ');
+      }
+    }
+
+    if (amount > 0) {
+      this.addExpense(vendor, amount);
+      return {
+        success: true,
+        vendor: vendor,
+        amount: amount,
+        newBalance: this.state.finances.liquidDebit
+      };
+    }
+    return { success: false };
+  }
+
   // Housing pipeline methods
   updateLeadStatus(leadId, newStatus) {
     const lead = this.state.housingPipeline.find(h => h.id === leadId);

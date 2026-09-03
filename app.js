@@ -1103,6 +1103,31 @@
       });
     }
 
+    // Scotiabank InfoAlerts Simulator
+    const simulateAlertBtn = document.getElementById('simulateAlertBtn');
+    if (simulateAlertBtn) {
+      simulateAlertBtn.addEventListener('click', () => {
+        const sampleAlert = "Scotiabank: A withdrawal of $16.10 was made on your account ending in 8492 at 3 BROTHERS SHAWARMA on Sep 02, 2026.";
+        const res = window.LifeBrain.parseScotiabankInfoAlert(sampleAlert);
+        if (res && res.success) {
+          if (importModal) importModal.style.display = 'none';
+          showToast(`⚡ Scotiabank Alert Processed: -$${res.amount.toFixed(2)} @ ${res.vendor}! Balance: $${res.newBalance.toFixed(2)}`);
+        }
+      });
+    }
+
+    // URL Query Parameter Auto-Sync Hook (e.g. ?spend=16.10&vendor=Shawarma)
+    const urlParams = new URLSearchParams(window.location.search);
+    const spendParam = urlParams.get('spend');
+    const vendorParam = urlParams.get('vendor') || 'Card Purchase';
+    if (spendParam && !isNaN(parseFloat(spendParam))) {
+      const amt = parseFloat(spendParam);
+      window.LifeBrain.addExpense(vendorParam, amt);
+      showToast(`⚡ Auto-Synced: $${amt.toFixed(2)} at ${vendorParam}!`);
+      // Clean query param from URL bar
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
     if (zoomClinicBtn && state.leafletMap) {
       zoomClinicBtn.addEventListener('click', () => {
         setMobileTab('map');
