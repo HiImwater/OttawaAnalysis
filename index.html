@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>LifeGuide AI • Jordan's Unified Life OS & Spatial Cockpit</title>
+  
+  <!-- iOS Safari & Web App Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LifeGuide AI">
+  <meta name="theme-color" content="#07090e">
+  <meta name="description" content="Unified Life OS for Jordan: Live Directional GPS, Interactive Map Drawing, Omni-Stream NLP Logging, Housing Pipeline, Financial Runway, and Health OS.">
+  <meta name="author" content="Jordan & Antigravity">
+
+  <!-- Google Fonts (Outfit, JetBrains Mono, Cinzel) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS for Interactive Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <!-- Unified Cockpit Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- TOP TELEMETRY & STATUS BAR -->
+  <header class="telemetry-bar">
+    <div class="brand-section">
+      <div class="brand-icon">🧠</div>
+      <div class="brand-text">
+        <h1>LifeGuide AI <span class="brand-tag">LIFE OS</span></h1>
+        <p>SINGLE-SCREEN UNIFIED COCKPIT • MAP + INTELLIGENCE ALWAYS VISIBLE</p>
+      </div>
+    </div>
+
+    <!-- Live Financial Balance & Health Metrics -->
+    <div class="header-live-stats">
+      <div class="stat-pill" title="Immediately Available Bank Balance">
+        <span class="stat-pill-label">💵 Liquid Cash:</span>
+        <span class="stat-pill-val" id="headerLiquidVal">$3,000.00</span>
+      </div>
+      <div class="stat-pill" title="Confirmed Clinic Appointment">
+        <span class="stat-pill-label">🏥 Clinic:</span>
+        <span class="stat-pill-val text-cyan" id="headerClinicVal">Thu 11:50 AM</span>
+      </div>
+    </div>
+
+    <div class="telemetry-right">
+      <!-- Live Mobile Directional GPS Button -->
+      <button id="gpsLocateBtn" class="gps-btn" title="Enable live directional GPS on your iPhone">
+        <span>🧭</span> <span id="gpsBtnText">GPS & Radar</span>
+      </button>
+
+      <div class="live-badge">
+        <span id="liveClockText">--:--</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- OMNI-INPUT STREAM BAR ("DO EVERYTHING" ENTRY) -->
+  <section class="omni-stream-section" id="omniStreamSection">
+    <div class="omni-input-wrapper">
+      <span class="omni-icon">💭</span>
+      <input type="text" id="omniInputField" placeholder="Tell LifeGuide anything (e.g. 'Spent $16 on food', 'Found room on Nelson for $820', 'Toe feeling better', 'pin: good cafe')..." autocomplete="off">
+      <button id="omniSubmitBtn" class="omni-submit-btn">
+        <span>⚡</span> Log Stream
+      </button>
+    </div>
+    
+    <!-- Quick Tag Suggestion Chips -->
+    <div class="omni-quick-chips">
+      <span class="quick-chip-label">Quick Action:</span>
+      <button class="quick-tag-chip" data-prefix="Spent $"><span>💰</span> Log Expense</button>
+      <button class="quick-tag-chip" data-prefix="Found room on "><span>🏠</span> Add Housing Lead</button>
+      <button class="quick-tag-chip" data-prefix="Toe condition: "><span>🦶</span> Health Update</button>
+      <button class="quick-tag-chip" data-prefix="pin: "><span>📍</span> Drop Custom Pin</button>
+      <button class="quick-tag-chip" data-prefix="Note: "><span>📝</span> Add to Scratchpad</button>
+    </div>
+  </section>
+
+  <!-- UNIFIED COCKPIT CONTAINER -->
+  <main class="cockpit-container" id="cockpitContainer">
+
+    <!-- LEFT CONTROL DECK / SIDEBAR (Tabs & Live Modules) -->
+    <aside class="cockpit-sidebar" id="cockpitSidebar">
+      
+      <!-- Primary OS Navigation Tabs -->
+      <div class="deck-tabs-bar">
+        <button class="deck-tab active" data-deck="copilot"><span>⚡</span> Co-Pilot</button>
+        <button class="deck-tab" data-deck="notepad"><span>📝</span> Notepad</button>
+        <button class="deck-tab" data-deck="housing"><span>🏠</span> Housing</button>
+        <button class="deck-tab" data-deck="runway"><span>💰</span> Runway</button>
+        <button class="deck-tab" data-deck="nutrition"><span>🥗</span> Nutrition</button>
+        <button class="deck-tab" data-deck="plan"><span>📅</span> 7-Day</button>
+      </div>
+
+      <!-- DECK 1: AUTONOMOUS CO-PILOT HUD -->
+      <div class="deck-panel active" id="deckPanelCopilot">
+        <div class="copilot-hero-banner" id="sidebarCopilotBanner">
+          <!-- Dynamically managed by SpatialOptimizerEngine & LifeBrain -->
+        </div>
+
+        <!-- Next Best Action Card -->
+        <div class="deck-card next-action-card" id="nextActionCard">
+          <div class="card-header">
+            <span class="card-title">⚡ Neural Next Best Action</span>
+            <span class="urgency-badge" id="nextActionTag">🌙 Nocturnal Grind</span>
+          </div>
+          <h3 id="nextActionTitle">Socialize at The Loft or Deep AI Cash Grind</h3>
+          <p id="nextActionDesc">The Loft (14 Waller) is open til 1 AM (20m away). Or grind 2 hrs on DataAnnotation ($20–$40/hr USD) from the quiet hostel lounge.</p>
+          
+          <div class="script-bubble-box" id="nextActionScriptBox">
+            <span class="script-label">💬 Instant Script:</span>
+            <span id="nextActionScriptText">"Hey! Mind if I jump in for the next round? I work in AI."</span>
+            <button class="copy-script-btn" id="copyNextActionScriptBtn">📋 Copy</button>
+          </div>
+        </div>
+
+        <!-- 7-Day Day Selector Strip -->
+        <div class="seven-day-strip">
+          <button class="day-tab-btn active" data-day="1">Day 1 (Wed)</button>
+          <button class="day-tab-btn" data-day="2">Day 2 (Thu)</button>
+          <button class="day-tab-btn" data-day="3">Day 3 (Fri)</button>
+          <button class="day-tab-btn" data-day="4">Day 4 (Sat)</button>
+          <button class="day-tab-btn" data-day="5">Day 5 (Sun)</button>
+          <button class="day-tab-btn" data-day="6">Day 6 (Mon)</button>
+          <button class="day-tab-btn" data-day="7">Day 7 (Tue)</button>
+        </div>
+
+        <!-- Filter Chips for Waypoints -->
+        <div class="filter-chips-bar">
+          <button class="filter-chip active" data-filter="battleplan">⚡ Schedule</button>
+          <button class="filter-chip" data-filter="health">🏥 Clinics</button>
+          <button class="filter-chip" data-filter="errands">🎧 Tech</button>
+          <button class="filter-chip" data-filter="housing">🏠 Rooms</button>
+          <button class="filter-chip" data-filter="jobs">💻 AI Jobs</button>
+          <button class="filter-chip" data-filter="meetups">🚀 Social</button>
+          <button class="filter-chip" data-filter="nutrition">🥗 Food</button>
+          <button class="filter-chip" data-filter="all">📂 All</button>
+        </div>
+
+        <!-- Scrollable Schedule / Directory Feed -->
+        <div class="feed-scroll-list" id="intelFeedList">
+          <!-- Injected dynamically by app.js -->
+        </div>
+      </div>
+
+      <!-- DECK 2: MANUAL NOTEPAD & SCRATCHPAD (Auto-Saving) -->
+      <div class="deck-panel" id="deckPanelNotepad">
+        <div class="deck-card">
+          <div class="card-header">
+            <span class="card-title">📝 Manual Scratchpad</span>
+            <span class="save-status-badge" id="notepadSaveBadge">🟢 Auto-saved</span>
+          </div>
+          <p class="card-subtext">Type notes, buzzer codes, landlord terms, or thoughts. Saves automatically to your phone.</p>
+          
+          <div class="notepad-quick-insert-bar">
+            <button class="notepad-insert-btn" data-template="• Landlord Questions:\n  - All utilities & Wi-Fi included?\n  - Outdoor smoking on patio OK?\n  - Ontario Standard Lease ready?\n">🏠 Landlord Qs</button>
+            <button class="notepad-insert-btn" data-template="• Grocery List ($50 Cart):\n  - Eggs (18-pk), Oats (1kg), Peanut Butter\n  - Chicken Breast, Sweet Potatoes, Broccoli\n">🛒 $50 Groceries</button>
+            <button class="notepad-insert-btn" data-template="• Buzzer Code: \n• Unit #: \n• Landlord Phone: \n">🔑 Buzzer/Keys</button>
+          </div>
+
+          <textarea id="manualNotepadTextarea" class="manual-notepad-textarea" spellcheck="false" placeholder="Write anything here..."></textarea>
+          
+          <div class="notepad-actions-row">
+            <button class="action-btn secondary" id="copyNotepadBtn">📋 Copy All Notes</button>
+            <button class="action-btn secondary" id="clearNotepadBtn">🧹 Clear Notes</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DECK 3: HOUSING PIPELINE (Interactive Kanban & Add Room) -->
+      <div class="deck-panel" id="deckPanelHousing">
+        <div class="deck-card">
+          <div class="card-header">
+            <span class="card-title">🏠 Housing Pipeline Deck</span>
+            <button class="small-add-btn" id="openAddRoomModalBtn">+ Add Room</button>
+          </div>
+          <p class="card-subtext">Move-in Target: <strong>Sunday, Sept 6</strong>. Target: $750–$950 all-inc with outdoor patio.</p>
+          
+          <!-- Housing Pipeline Cards Container -->
+          <div class="housing-pipeline-cards" id="housingPipelineList">
+            <!-- Injected dynamically by app.js from LifeBrain -->
+          </div>
+        </div>
+      </div>
+
+      <!-- DECK 4: FINANCIAL RUNWAY & WEALTH SIMULATOR -->
+      <div class="deck-panel" id="deckPanelRunway">
+        <div class="deck-card">
+          <div class="card-header">
+            <span class="card-title">💰 Live Financial Engine</span>
+            <span class="runway-val-big" id="deckRunwayStatus">🟢 Breakeven (+$45/mo)</span>
+          </div>
+
+          <!-- Live Assets Grid -->
+          <div class="assets-summary-grid">
+            <div class="asset-tile">
+              <span class="asset-tile-label">Liquid Debit</span>
+              <span class="asset-tile-val text-emerald" id="deckLiquidVal">$3,000.00</span>
+            </div>
+            <div class="asset-tile">
+              <span class="asset-tile-label">Credit Line</span>
+              <span class="asset-tile-val text-cyan">$2,500.00</span>
+            </div>
+            <div class="asset-tile">
+              <span class="asset-tile-label">Cash Reserve</span>
+              <span class="asset-tile-val text-amber">$3,000.00</span>
+            </div>
+            <div class="asset-tile">
+              <span class="asset-tile-label">Total Safety Buffer</span>
+              <span class="asset-tile-val">$8,500.00</span>
+            </div>
+          </div>
+
+          <!-- Cash Flow Simulator Form -->
+          <div class="runway-form-section">
+            <h4>📊 Monthly Cash-Flow Math</h4>
+            <div class="runway-inputs-row">
+              <div class="mini-input-group">
+                <label>Base Income ($/mo)</label>
+                <input type="number" id="deckIncomeInput" value="1300" step="50">
+              </div>
+              <div class="mini-input-group">
+                <label>Target Rent ($/mo)</label>
+                <input type="number" id="deckRentInput" value="800" step="50">
+              </div>
+            </div>
+            <div class="mini-input-group" style="margin-top: 8px;">
+              <label>Remote AI Tasks (Hrs/Week @ $34 CAD/hr)</label>
+              <input type="number" id="deckAiHoursInput" value="10" step="2">
+            </div>
+            <div class="cash-flow-breakdown" id="deckCashFlowBreakdown">
+              <!-- Injected by app.js -->
+            </div>
+          </div>
+
+          <!-- Logged Expenses Feed -->
+          <div class="expenses-feed-section">
+            <h4>🧾 Logged Expenses</h4>
+            <div class="expenses-list" id="deckExpensesList">
+              <!-- Injected from LifeBrain -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DECK 5: CHRONO-NUTRITION & TOE HEALTH OS -->
+      <div class="deck-panel" id="deckPanelNutrition">
+        <div class="deck-card">
+          <div class="card-header">
+            <span class="card-title">🥗 Chrono-Nutrition & Care</span>
+            <span class="health-badge" id="healthStatusBadge">🦶 Appt Thu 11:50 AM</span>
+          </div>
+
+          <!-- Confirmed Clinic Box -->
+          <div class="clinic-status-box">
+            <div style="font-weight: 700; color: #f87171; font-size: 0.95rem; margin-bottom: 2px;">
+              🏥 Confirmed Medical Appointment
+            </div>
+            <div style="color: #fff; font-size: 0.88rem;">Downtown Urgent Care • 158 Rideau St (220m away)</div>
+            <div style="color: var(--amber); font-family: var(--font-mono); font-size: 0.8rem; margin-top: 4px;">
+              Thursday, Sept 3 @ 11:50 AM (Arrive 11:35 AM) • Phone: 613-482-9051
+            </div>
+            <button class="action-btn primary" style="margin-top: 8px; padding: 6px 12px; font-size: 0.8rem;" id="zoomClinicMapBtn">
+              📍 Zoom to Clinic on Map
+            </button>
+          </div>
+
+          <!-- Chrono-Nutrition Windows -->
+          <div class="nutrition-windows-list" id="nutritionWindowsList">
+            <!-- Injected from OTTAWA_DATA.nutritionProtocol -->
+          </div>
+        </div>
+      </div>
+
+      <!-- DECK 6: 7-DAY MASTER SPRINT -->
+      <div class="deck-panel" id="deckPanelPlan">
+        <div class="deck-card">
+          <div class="card-header">
+            <span class="card-title">📅 7-Day Master Roadmap</span>
+          </div>
+          <div class="roadmap-timeline-box" id="masterRoadmapBox">
+            <!-- Injected by app.js -->
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- RIGHT MAIN PANE: MAP & DRAWING CANVAS (ALWAYS VISIBLE) -->
+    <section class="cockpit-main" id="cockpitMain">
+      
+      <!-- Leaflet Map Viewport (PERSISTENT CORE) -->
+      <div id="map-container"></div>
+
+      <!-- MAP DRAWING & ANNOTATION TOOLBAR -->
+      <div class="map-drawing-toolbar" id="mapDrawingToolbar">
+        <button class="draw-tool-btn" id="drawPenBtn" title="Draw freehand on the map">
+          <span>✏️</span> <span class="tool-text">Pen</span>
+        </button>
+        <button class="draw-tool-btn" id="drawCircleBtn" title="Draw a circle/zone on the map">
+          <span>⭕</span> <span class="tool-text">Zone</span>
+        </button>
+        <button class="draw-tool-btn" id="dropPinBtn" title="Drop a custom marked pin on the map">
+          <span>📍</span> <span class="tool-text">Pin</span>
+        </button>
+        
+        <!-- Color Selector -->
+        <div class="draw-color-picker">
+          <button class="color-dot active" data-color="#06b6d4" style="background: #06b6d4;" title="Cyan"></button>
+          <button class="color-dot" data-color="#10b981" style="background: #10b981;" title="Emerald"></button>
+          <button class="color-dot" data-color="#f43f5e" style="background: #f43f5e;" title="Rose"></button>
+          <button class="color-dot" data-color="#f59e0b" style="background: #f59e0b;" title="Amber"></button>
+        </div>
+
+        <button class="draw-tool-btn danger" id="clearDrawingsBtn" title="Clear all drawings from map">
+          <span>🧹</span>
+        </button>
+      </div>
+
+      <!-- Dedicated Horizontal Scrollable Waypoint Timeline Bar -->
+      <div class="horizontal-timeline-bar" id="horizontalTimelineBar">
+        <div class="timeline-nav-title">
+          <span>🕒</span> Waypoints
+        </div>
+        <div class="timeline-scroll-track" id="timelineScrollTrack">
+          <!-- Injected dynamically by app.js -->
+        </div>
+      </div>
+
+      <!-- Floating Detail Drawer (Slide-up detail card) -->
+      <div class="floating-detail-drawer" id="floatingDrawer">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- iOS Modern Floating Dock Bar (Phone Screens) -->
+  <nav class="mobile-view-bar">
+    <button class="mobile-nav-btn active" data-view="map">
+      <span>🗺️</span>
+      <span>Live Map</span>
+    </button>
+    <button class="mobile-nav-btn" data-view="deck">
+      <span>⚡</span>
+      <span>Deck & OS</span>
+    </button>
+    <button class="mobile-nav-btn" data-view="notes">
+      <span>📝</span>
+      <span>Notepad</span>
+    </button>
+    <button class="mobile-nav-btn" id="mobileNavLore">
+      <span>🏰</span>
+      <span>Jail Lore</span>
+    </button>
+  </nav>
+
+  <!-- Modal: Jail Basecamp & Gallows Lore -->
+  <div class="modal-overlay" id="loreModalOverlay">
+    <div class="modal-box">
+      <button class="modal-close-btn" id="closeLoreModalBtn">&times;</button>
+      
+      <div style="font-family: var(--font-serif); font-size: 1.35rem; color: #fff; margin-bottom: 6px;">
+        🏛️ Carleton County Gaol (75 Nicholas St)
+      </div>
+      <div style="color: var(--amber); font-family: var(--font-mono); font-size: 0.78rem; margin-bottom: 14px;">
+        BUILT 1862 • DECOMMISSIONED 1972 • DESIGNATED HERITAGE LANDMARK
+      </div>
+
+      <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin-bottom: 12px;">
+        You are sleeping inside Canada’s most notorious Victorian prison. The <strong>90 cm (3-foot) thick Gloucester limestone walls</strong> were built without heating or plumbing. 
+      </p>
+
+      <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: var(--radius-md); padding: 12px; margin-bottom: 14px;">
+        <h4 style="color: #fca5a5; font-size: 0.95rem; margin-bottom: 4px;">⚖️ The 1869 Execution of Patrick J. Whelan</h4>
+        <p style="color: var(--text-muted); font-size: 0.82rem; line-height: 1.45;">
+          Following the assassination of Thomas D'Arcy McGee, tailor Patrick J. Whelan was hanged on the 8th floor gallows on <strong>February 11, 1869</strong> in front of 5,000 spectators in a heavy snowstorm on Nicholas Street—Canada's last public hanging.
+        </p>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 10px; font-size: 0.78rem; color: var(--cyan);">
+        <span>⭐ 24/7 Front Desk: +1 (613) 235-2595</span>
+        <span>Daily Tour: 11:00 AM</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <!-- Project Scripts -->
+  <script src="data.js"></script>
+  <script src="lifeBrain.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
