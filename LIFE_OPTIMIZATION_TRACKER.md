@@ -37,17 +37,17 @@
 
 ---
 
-## 💵 Phase 1: Rapid Surplus & Savings Acceleration (Weeks 1–4)
+## 💵 Phase 1: Optional Future Upside & Savings Acceleration (Weeks 1–4)
+*Note: Your core living budget is 100% solvent on your guaranteed $1,300/mo alone. Any remote income below is pure extra buffer.*
 
-### 💻 Remote AI Tasking Pipeline (Pure Surplus)
+### 💻 Remote AI Tasking Pipeline (Optional Extra Cash)
 - [ ] **DataAnnotation.tech:** Complete 45-minute starter assessment to unlock $20–$40/hr USD prompt evaluation.
 - [ ] **Outlier.ai:** Complete coding / reasoning verification test for $25–$45/hr USD tasks.
-- [ ] **Monthly Surplus Target:** Log 10 hours/week on DataAnnotation (~$34 CAD/hr = +$1,360 CAD/mo).
-- [ ] **Total Monthly Savings Rate:** Save $1,000+ every month into bank account.
+- [ ] **Future Target:** Log hours only when ready—bank all earnings directly into savings buffer.
 
 ### 📞 Temp Staffing Agency Backup
-- [ ] **PeopleReady:** Complete ID verification on **JobStack** app for optional weekend daily shifts.
-- [ ] **Labor Tek Personnel:** Onboard for backup warehouse/event setup shifts.
+- [ ] **PeopleReady:** Complete ID verification on **JobStack** app for optional on-demand shifts.
+- [ ] **Labor Tek Personnel:** Onboard for backup event/general labor setup shifts.
 
 ---
 
@@ -56,8 +56,9 @@
 | Metric | Current State | 7-Day Target | 30-Day Target |
 | :--- | :--- | :--- | :--- |
 | **Housing Status** | Hostel ($45/night) | **Private Room ($800/mo)** | Settled & Stable |
-| **Liquid Bank Balance** | $3,000 CAD | **$1,400 CAD** (after deposit) | **$2,400+ CAD** (with AI tasks) |
-| **Total Net Safety Buffer** | $8,500 CAD | **$6,900 CAD** | **$8,000+ CAD** |
-| **Monthly Net Flow** | Negative (Hostel burn) | **Breakeven (+$45/mo)** | **+$1,000+ Surplus/mo** |
+| **Guaranteed Monthly Income** | $1,300 CAD / mo | **$1,300 CAD / mo** | **$1,300 CAD / mo** |
+| **Liquid Bank Balance** | $3,000 CAD | **$1,400 CAD** (after deposit) | **$1,550+ CAD** |
+| **Total Net Safety Buffer** | $8,500 CAD | **$6,900 CAD** | **$7,055+ CAD** |
+| **Guaranteed Net Flow (Base)** | Negative (Hostel burn) | **+$155/mo Surplus** | **+$155/mo Surplus** |
 | **Earphones / Audio Gear** | ✅ **Acquired** | Fully Operational | Operational |
 | **Toe Health** | Appt Thu 11:50 AM | **Treated & Healing** | 100% Healed |

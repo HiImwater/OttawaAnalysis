@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
   <!-- Unified Mobile-First Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=3.0.0">
+  <link rel="stylesheet" href="style.css?v=3.1.0">
 </head>
 <body>
 
@@ -160,11 +160,11 @@
       <!-- PANEL 2: HOUSING PIPELINE & FINANCIAL RUNWAY -->
       <div class="deck-panel" id="deckPanelHousing">
         
-        <!-- Financial Summary Banner -->
+        <!-- Financial Summary Banner (Grounded in Real $1,300/mo Inflow) -->
         <div class="finance-hero-banner">
           <div class="finance-header-row">
-            <span class="finance-title">💰 Runway & Assets</span>
-            <span class="surplus-pill" id="housingSurplusPill">🟢 +$45/mo Surplus</span>
+            <span class="finance-title">💰 Guaranteed Runway & Solvency</span>
+            <span class="surplus-pill" id="housingSurplusPill">🟢 +$155/mo Base Surplus</span>
           </div>
           <div class="finance-metrics-grid">
             <div class="metric-cell">
@@ -180,8 +180,26 @@
               <span class="m-val text-amber">$3,000.00</span>
             </div>
             <div class="metric-cell">
-              <span class="m-label">Base Income</span>
-              <span class="m-val text-emerald">+$1,300/mo</span>
+              <span class="m-label">Guaranteed Inflow</span>
+              <span class="m-val text-emerald">+$1,300.00/mo</span>
+            </div>
+          </div>
+          <div style="background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-xs); padding: 8px 10px; font-size: 0.76rem; font-family: var(--font-mono); display: flex; flex-direction: column; gap: 3px;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">• Target Rent (All-inclusive):</span>
+              <span style="color: #fff;">$800.00/mo</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">• Food & Essentials ($50/wk):</span>
+              <span style="color: #fff;">$200.00/mo</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">• Phone & Transit:</span>
+              <span style="color: #fff;">$145.00/mo</span>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 3px; margin-top: 2px; display: flex; justify-content: space-between; font-weight: 700;">
+              <span style="color: var(--emerald);">GUARANTEED NET FLOW:</span>
+              <span style="color: var(--emerald);">+$155.00/mo (Self-Sustaining)</span>
             </div>
           </div>
         </div>
@@ -297,8 +315,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   
   <!-- Core Scripts with Cache Buster -->
-  <script src="data.js?v=3.0.0"></script>
-  <script src="lifeBrain.js?v=3.0.0"></script>
-  <script src="app.js?v=3.0.0"></script>
+  <script src="data.js?v=3.1.0"></script>
+  <script src="lifeBrain.js?v=3.1.0"></script>
+  <script src="app.js?v=3.1.0"></script>
 </body>
 </html>
