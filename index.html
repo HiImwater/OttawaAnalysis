@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
   <!-- Unified Mobile-First Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=3.1.0">
+  <link rel="stylesheet" href="style.css?v=3.2.0">
 </head>
 <body>
 
@@ -204,9 +204,36 @@
           </div>
         </div>
 
+        <!-- Urgent Housing Mission Banner -->
+        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: var(--radius-md); padding: 10px 12px; display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.84rem; font-weight: 800; color: var(--amber);">🏰 Hostel Checkout: Mon, Sept 7</span>
+            <span style="font-size: 0.7rem; font-family: var(--font-mono); background: rgba(245, 158, 11, 0.2); color: var(--amber); padding: 2px 7px; border-radius: var(--radius-full); font-weight: 700;">5 Days Left</span>
+          </div>
+          <p style="font-size: 0.78rem; color: #cbd5e1; line-height: 1.4;">
+            Currently in 10-man jail dorm. Objective: View & lock in a $700–$850/mo room in Sandy Hill/Centretown to move in on Monday.
+          </p>
+          <div style="display: flex; gap: 6px; overflow-x: auto; padding-top: 2px;">
+            <a href="https://www.facebook.com/marketplace/ottawa/rooms-for-rent" target="_blank" class="btn-compact primary" style="font-size: 0.72rem;">🌐 FB Marketplace</a>
+            <a href="https://www.kijiji.ca/b-room-rental-roommate/ottawa/c36l1700185" target="_blank" class="btn-compact secondary" style="font-size: 0.72rem;">🌐 Kijiji Ottawa</a>
+            <a href="https://www.padmapper.com/apartments/ottawa-on/sandy-hill" target="_blank" class="btn-compact secondary" style="font-size: 0.72rem;">🌐 PadMapper</a>
+          </div>
+        </div>
+
+        <!-- 1-Tap Landlord DM Outreach Script -->
+        <div style="background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border-cyan); border-radius: var(--radius-sm); padding: 8px 10px; display: flex; flex-direction: column; gap: 4px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.74rem; font-weight: 700; color: var(--cyan);">💬 Landlord DM Outreach Script</span>
+            <button class="script-copy-btn" onclick="navigator.clipboard.writeText('Hi! Is this room still available for September move-in? I am a quiet, clean, non-destructive tech operator looking for a long-term place. I have first/last month rent ready immediately in cash/e-transfer. When are you free for a quick viewing today or tomorrow? Thanks, Jordan'); window.showToast('📋 Landlord script copied!');">📋 Copy</button>
+          </div>
+          <div style="font-size: 0.74rem; color: #cbd5e1; font-style: italic; line-height: 1.35;">
+            "Hi! Is this room still available for Sept move-in? I am clean, quiet, have first/last ready immediately. When can I view it today/tomorrow?"
+          </div>
+        </div>
+
         <!-- Housing Pipeline Header -->
         <div class="section-title-row">
-          <span class="section-heading">🏠 Housing Leads (Move-in by Sunday)</span>
+          <span class="section-heading">🏠 Active Room Leads</span>
           <button class="btn-compact primary" id="openAddRoomModalBtn">+ Add Room</button>
         </div>
 
@@ -315,8 +342,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   
   <!-- Core Scripts with Cache Buster -->
-  <script src="data.js?v=3.1.0"></script>
-  <script src="lifeBrain.js?v=3.1.0"></script>
-  <script src="app.js?v=3.1.0"></script>
+  <script src="data.js?v=3.2.0"></script>
+  <script src="lifeBrain.js?v=3.2.0"></script>
+  <script src="app.js?v=3.2.0"></script>
 </body>
 </html>

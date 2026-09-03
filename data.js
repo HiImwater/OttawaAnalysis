@@ -11,10 +11,10 @@ const OTTAWA_DATA = {
     targetRent: "$700 – $950 / mo ($800 optimal)",
     targetAreas: "Sandy Hill / Centretown",
     smokerStatus: "Smoker (Strictly Outdoors / Respectful of indoor smoke-free spaces)",
-    language: "English Dominant",
-    basecamp: "Saintlo Ottawa Jail Hostel (75 Nicholas St)",
+    basecamp: "Saintlo Ottawa Jail Hostel (75 Nicholas St - 10-Bed Dorm)",
+    hostelCheckoutDate: "Monday, Sept 7 (5 nights remaining)",
+    housingStatus: "Searching for Room (Move-in by Sept 7)",
     sleepPreference: "Nocturnal Power Operator (Sleeps during quiet day hours when dorms are empty)",
-    moveInDeadline: "Sunday, Sept 6 (Move-in to stop daily hostel bleed)",
     
     // Confirmed Medical Appointment
     clinicAppointment: {

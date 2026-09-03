@@ -49,12 +49,14 @@ NET MONTHLY BASE CASH FLOW:        +$45 CAD / month (SELF-SUSTAINING ON BASE ALO
 
 ---
 
-## 🎯 4. Urgent Constraints & Housing Targets
-* **Move-In Deadline:** **Sunday, September 6, 2026** (4-day sprint to transition from hostel to permanent $800 room).
-* **Target Housing:**
-  - Budget: **$700 – $950 / month all-inclusive** (Optimal: $800 shared room with back patio).
-  - Priority Neighborhoods: **Sandy Hill** (uOttawa border) or **Centretown** (Golden Triangle).
-* **Nocturnal Outreach Advantage:** Firing 15 landlord inquiries between 2:00 AM – 5:00 AM guarantees #1 top-of-inbox placement when landlords wake up at 7:00 AM!
+## 🎯 4. Urgent Reality & Housing Countdown
+* **Current Situation:** Sleeping in the **10-man dorm at Saintlo Ottawa Jail Hostel (75 Nicholas St)**.
+* **Hostel Departure Date:** **Monday, September 7, 2026** (5 nights remaining).
+* **Current Status:** **NO permanent room secured yet, and NO further plans created after Sept 7.**
+* **Immediate Strategic Goal (Wed Sept 2 – Mon Sept 7):**
+  - Use the 5 remaining nights to find, view, and lock in a **$700 – $850/mo all-inclusive room** (Sandy Hill / Centretown / uOttawa area).
+  - First/last month deposit ready ($1,500–$1,700) from liquid $3,000 debit.
+  - Checkout of hostel and move directly into room on **Monday, September 7**.
 
 ---
 
