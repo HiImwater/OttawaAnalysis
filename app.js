@@ -1116,15 +1116,26 @@
       });
     }
 
-    // URL Query Parameter Auto-Sync Hook (e.g. ?spend=16.10&vendor=Shawarma)
+    // URL Query Parameter Auto-Sync Hook (e.g. ?alert=... OR ?spend=16.10&vendor=Shawarma)
     const urlParams = new URLSearchParams(window.location.search);
+    const alertParam = urlParams.get('alert');
     const spendParam = urlParams.get('spend');
     const vendorParam = urlParams.get('vendor') || 'Card Purchase';
-    if (spendParam && !isNaN(parseFloat(spendParam))) {
+
+    if (alertParam) {
+      const decodedAlert = decodeURIComponent(alertParam);
+      const res = window.LifeBrain.parseScotiabankInfoAlert(decodedAlert);
+      if (res && res.success) {
+        showToast(`⚡ Scotiabank Alert Recorded: -$${res.amount.toFixed(2)} @ ${res.vendor}! Balance: $${res.newBalance.toFixed(2)}`);
+      } else {
+        window.LifeBrain.importTransactions(decodedAlert);
+        showToast(`⚡ Scotiabank Alert Processed!`);
+      }
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (spendParam && !isNaN(parseFloat(spendParam))) {
       const amt = parseFloat(spendParam);
       window.LifeBrain.addExpense(vendorParam, amt);
       showToast(`⚡ Auto-Synced: $${amt.toFixed(2)} at ${vendorParam}!`);
-      // Clean query param from URL bar
       window.history.replaceState({}, document.title, window.location.pathname);
     }
 
